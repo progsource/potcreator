@@ -1,0 +1,32 @@
+{
+  "output" : "/template.pot",
+  "displaySrc" : true,
+  "modules" : [
+    {
+      "name" : "gdscript",
+      "data" : {
+        "paths" : ["/scripts", "/scripts2"]
+      }
+    },
+    {
+      "name": "sqlite",
+      "data" : {
+        "dbs" : [
+          {
+            "path" : "/multi.db",
+            "tables" : [
+              {
+                "tablename" : "examples",
+                "columns" : ["name"]
+              },
+              {
+                "tablename" : "testing",
+                "columns" : ["word", "category"]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

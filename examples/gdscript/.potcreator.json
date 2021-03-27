@@ -1,0 +1,12 @@
+{
+  "output" : "/template.pot",
+  "displaySrc" : true,
+  "modules" : [
+    {
+      "name" : "gdscript",
+      "data" : {
+        "paths" : ["/scripts"]
+      }
+    }
+  ]
+}

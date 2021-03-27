@@ -1,0 +1,12 @@
+# Don't remove the two lines below, they're required for gettext to work correctly.
+msgid ""
+msgstr ""
+
+
+#. /data.db table: examples column: name
+msgid "Testing"
+msgstr ""
+
+#. /data.db table: examples column: name
+msgid "Text from db"
+msgstr ""

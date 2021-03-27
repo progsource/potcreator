@@ -1,0 +1,22 @@
+{
+  "output" : "/template.pot",
+  "displaySrc" : true,
+  "modules" : [
+    {
+      "name": "sqlite",
+      "data" : {
+        "dbs" : [
+          {
+            "path" : "/data.db",
+            "tables" : [
+              {
+                "tablename" : "examples",
+                "columns" : ["name"]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
