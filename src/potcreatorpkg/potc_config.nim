@@ -28,12 +28,12 @@ const CONFIG_FILE_NAME = ".potcreator.json"
 type
   Config* = ref object
     ## project configuration
-    basePath* : string ## base path
-    outputPath* : string ## file to output `*.pot` file based on base path
-    isDisplaySrcEnabled* : bool ## en-/disable output of where translations come from
-    isVerbose* : bool ## en-/diable verbose output
-    modules* : seq[string] ## configured module names
-    moduleData* : JsonNode ## module configurations
+    basePath*: string     ## base path
+    outputPath*: string   ## file to output `*.pot` file based on base path
+    isDisplaySrcEnabled*: bool ## en-/disable output of where translations come from
+    isVerbose*: bool      ## en-/diable verbose output
+    modules*: seq[string] ## configured module names
+    moduleData*: JsonNode ## module configurations
 
 
 proc getConfigFromFile*(path: string): Config =
@@ -47,7 +47,7 @@ proc getConfigFromFile*(path: string): Config =
   result.basePath = path
 
   let filename = joinPath(path, CONFIG_FILE_NAME)
-  let jsonString : string = readFile(filename)
+  let jsonString: string = readFile(filename)
 
   doAssert len(jsonString) > 0
 

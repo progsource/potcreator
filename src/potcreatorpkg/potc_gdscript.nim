@@ -31,16 +31,16 @@ import potc_output
 
 type
   GDScriptConfig = ref object
-    paths* : seq[string]
+    paths*: seq[string]
 
   ThreadOut = ref object
-    keys* : seq[Output]
+    keys*: seq[Output]
 
 
-const MODULE_NAME : string = "gdscript"
+const MODULE_NAME: string = "gdscript"
 
 
-proc getModuleConfig(cfg : Config): GDScriptConfig =
+proc getModuleConfig(cfg: Config): GDScriptConfig =
   if MODULE_NAME notin cfg.modules:
     return
 
@@ -65,7 +65,7 @@ proc getModuleConfig(cfg : Config): GDScriptConfig =
       result.paths.add(path.getStr())
 
 
-proc getTranslationsFromFile(basePath : string, path : string): ThreadOut =
+proc getTranslationsFromFile(basePath: string, path: string): ThreadOut =
   result = ThreadOut.new
   let filename = normalizedPath(path).substr(len(normalizedPath(basePath)) + 1)
 
@@ -74,7 +74,7 @@ proc getTranslationsFromFile(basePath : string, path : string): ThreadOut =
   let regTest = re"[^a-zA-z0-9_]+tr\(""([^!\""\)]*)""\)"
   const startSubString = "tr(\""
   const endSubStringSize = len("\")")
-  var lineNumber : int = 0
+  var lineNumber: int = 0
 
   for line in lines path:
     lineNumber += 1
@@ -89,7 +89,7 @@ proc getTranslationsFromFile(basePath : string, path : string): ThreadOut =
       result.keys.add(outp)
 
 
-proc getTranslations*(cfg : Config): seq[Output] =
+proc getTranslations*(cfg: Config): seq[Output] =
   ## Takes the potcreator config and outputs a sequence of translations
   var gdscriptConfig = getModuleConfig(cfg)
 

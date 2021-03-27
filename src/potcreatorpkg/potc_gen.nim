@@ -26,16 +26,16 @@ import os
 import potc_config
 import potc_output
 
-proc cmpTranslations(x, y : Output) : int =
+proc cmpTranslations(x, y: Output): int =
   if x.key < y.key: -1
   elif x.key == y.key: 0
   else: 1
 
-proc mergeTranslations(translations: seq[Output]) : seq[Output] =
+proc mergeTranslations(translations: seq[Output]): seq[Output] =
   var trs = translations
-  var keys : seq[string]
+  var keys: seq[string]
 
-  var tls : seq[Output] = sorted(trs, cmpTranslations)
+  var tls: seq[Output] = sorted(trs, cmpTranslations)
   for t in tls:
     if t.key notin keys:
       keys.add(t.key)
@@ -49,7 +49,7 @@ proc mergeTranslations(translations: seq[Output]) : seq[Output] =
     result[index].extract.insert(t.extract, len(result[index].extract))
 
 
-proc genPot*(cfg : Config, translations : seq[Output]) : int =
+proc genPot*(cfg: Config, translations: seq[Output]): int =
   ## Takes in the project configuration and the collected translations.
   ## It generates the `*.pot` file and returns 0 on success else some other int.
   const HEADER = """
@@ -73,7 +73,8 @@ msgstr ""
         potData = join([potData, "\n#. ", extract], "")
       for src in translation.src:
         potData = join([potData, "\n#: ", src], "")
-    potData = join([potData, "\nmsgid \"", translation.key, "\"\nmsgstr \"\"\n"], "")
+    potData = join([potData, "\nmsgid \"", translation.key,
+        "\"\nmsgstr \"\"\n"], "")
 
   writeFile(joinPath(cfg.basePath, cfg.outputPath), potData)
 

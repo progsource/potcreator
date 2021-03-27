@@ -21,6 +21,6 @@
 type
   Output* = ref object
     ## Translation key output
-    key* : string ## the actual translation key
-    src* : seq[string] ## files in which the key comes from
-    extract* : seq[string] ## other comments
+    key*: string      ## the actual translation key
+    src*: seq[string] ## files in which the key comes from
+    extract*: seq[string] ## other comments

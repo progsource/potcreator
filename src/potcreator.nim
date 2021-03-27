@@ -34,7 +34,7 @@ proc runCmd(): int =
   const version = "0.1.0"
   result = 0
 
-  var cmdl : seq[TaintedString]
+  var cmdl: seq[TaintedString]
   when declared(commandLineParams):
     cmdl = commandLineParams()
   else:
@@ -43,9 +43,9 @@ proc runCmd(): int =
 
   var p = newParser:
     help("{prog} collects translation keys from multiple resources and puts them into a *.pot file")
-    flag("-v", "--verbose", help="Verbose output")
-    flag("-V", "--version", help="Show version")
-    arg("pathToConfig", help="path to \".potcreator.json\" file")
+    flag("-v", "--verbose", help = "Verbose output")
+    flag("-V", "--version", help = "Show version")
+    arg("pathToConfig", help = "path to \".potcreator.json\" file")
 
   try:
     let args = p.parse(cmdl)

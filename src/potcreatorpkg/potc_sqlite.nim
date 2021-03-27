@@ -29,21 +29,21 @@ import potc_output
 
 type
   SQLiteTable = object
-    name* : string
-    columns* : seq[string]
+    name*: string
+    columns*: seq[string]
 
   SQLiteDb = object
-    path* : string
-    tables* : seq[SQLiteTable]
+    path*: string
+    tables*: seq[SQLiteTable]
 
   SQLiteConfig = ref object
-    dbs* : seq[SQLiteDb]
+    dbs*: seq[SQLiteDb]
 
 
-const MODULE_NAME : string = "sqlite"
+const MODULE_NAME: string = "sqlite"
 
 
-proc getModuleConfig(cfg : Config): SQLiteConfig =
+proc getModuleConfig(cfg: Config): SQLiteConfig =
   if MODULE_NAME notin cfg.modules:
     return
 
@@ -69,7 +69,7 @@ proc getModuleConfig(cfg : Config): SQLiteConfig =
       doAssert path.hasKey("tables")
       doAssert path["tables"].kind == JArray
 
-      var db : SQLiteDb
+      var db: SQLiteDb
       db.path = path["path"].getStr()
 
       for table in path["tables"]:
@@ -79,7 +79,7 @@ proc getModuleConfig(cfg : Config): SQLiteConfig =
         doAssert table.hasKey("columns")
         doAssert table["columns"].kind == JArray
 
-        var t : SQLiteTable
+        var t: SQLiteTable
         t.name = table["tablename"].getStr()
 
         for column in table["columns"]:
@@ -91,7 +91,7 @@ proc getModuleConfig(cfg : Config): SQLiteConfig =
       result.dbs.add(db)
 
 
-proc getTranslationsFromDb(basePath : string, db : SQLiteDb) : seq[Output] =
+proc getTranslationsFromDb(basePath: string, db: SQLiteDb): seq[Output] =
   let filename = joinPath(basePath, db.path)
   if not fileExists filename:
     return
@@ -99,20 +99,22 @@ proc getTranslationsFromDb(basePath : string, db : SQLiteDb) : seq[Output] =
   let dbconnection = open(filename, "", "", "")
 
   for table in db.tables:
-    let sqlSelect = sql(join(["SELECT ", join(table.columns, ", "), " FROM ", table.name], ""))
+    let sqlSelect = sql(join(["SELECT ", join(table.columns, ", "), " FROM ",
+        table.name], ""))
     for row in dbconnection.fastRows(sqlSelect):
-      var i : int = 0
+      var i: int = 0
       for column in row:
         var translation = Output.new
         translation.key = column
-        translation.extract.add(join([db.path, " table: ", table.name, " column: ", table.columns[i]], ""))
+        translation.extract.add(join([db.path, " table: ", table.name,
+            " column: ", table.columns[i]], ""))
         i += 1
         result.add(translation)
 
   dbconnection.close()
 
 
-proc getTranslations*(cfg : Config): seq[Output] =
+proc getTranslations*(cfg: Config): seq[Output] =
   ## Takes the potcreator config and outputs a sequence of translations
   let sqliteCfg = getModuleConfig(cfg)
 
