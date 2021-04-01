@@ -42,11 +42,16 @@ proc getConfigFromFile*(path: string): Config =
   ## directory. It returns the project configuration as object.
   doAssert dirExists path
 
+  var cleanPath = path
+
+  if path[len(path) - 1] == DirSep or path[len(path) - 1] == AltSep:
+    cleanPath = path.substr(0, len(path) - 2)
+
   result = Config.new
   result.isVerbose = false
-  result.basePath = path
+  result.basePath = cleanPath
 
-  let filename = joinPath(path, CONFIG_FILE_NAME)
+  let filename = joinPath(cleanPath, CONFIG_FILE_NAME)
   let jsonString: string = readFile(filename)
 
   doAssert len(jsonString) > 0

@@ -67,7 +67,7 @@ proc getModuleConfig(cfg: Config): GDScriptConfig =
 
 proc getTranslationsFromFile(basePath: string, path: string): ThreadOut =
   result = ThreadOut.new
-  let filename = normalizedPath(path).substr(len(normalizedPath(basePath)) + 1)
+  let filename = expandFilename(path).substr(len(expandFilename(basePath)) + 1).replace("\\", "/")
 
   doAssert fileExists path
 

@@ -3,24 +3,24 @@ msgid ""
 msgstr ""
 
 
-#: scripts\example.gd:23
-#: scripts\example.gd:26
-#: scripts\subfolder\example3.gd:23
+#: scripts/example.gd:23
+#: scripts/example.gd:26
+#: scripts/subfolder/example3.gd:23
 msgid "Hello World"
 msgstr ""
 
-#: scripts\example.gd:24
+#: scripts/example.gd:24
 msgid "This might display somewhere"
 msgstr ""
 
-#: scripts\subfolder\example3.gd:24
+#: scripts/subfolder/example3.gd:24
 msgid "black"
 msgstr ""
 
-#: scripts\subfolder\example3.gd:24
+#: scripts/subfolder/example3.gd:24
 msgid "item {} is nice"
 msgstr ""
 
-#: scripts\example2.gd:24
+#: scripts/example2.gd:24
 msgid "oh, hey"
 msgstr ""

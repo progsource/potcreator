@@ -3,12 +3,12 @@ msgid ""
 msgstr ""
 
 
-#: scripts\example.gd:23
-#: scripts\example.gd:26
+#: scripts/example.gd:23
+#: scripts/example.gd:26
 msgid "Hello World"
 msgstr ""
 
-#: scripts\example.gd:24
+#: scripts/example.gd:24
 msgid "This might display somewhere"
 msgstr ""
 
@@ -36,6 +36,6 @@ msgstr ""
 msgid "key"
 msgstr ""
 
-#: scripts2\example2.gd:24
+#: scripts2/example2.gd:24
 msgid "oh, hey"
 msgstr ""
