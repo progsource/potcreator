@@ -70,11 +70,10 @@ msgstr ""
 
     if cfg.isDisplaySrcEnabled:
       for extract in translation.extract:
-        potData = join([potData, "\n#. ", extract], "")
+        potData = potData & "\n#. " & extract
       for src in translation.src:
-        potData = join([potData, "\n#: ", src], "")
-    potData = join([potData, "\nmsgid \"", translation.key,
-        "\"\nmsgstr \"\"\n"], "")
+        potData = potData & "\n#: " & src
+    potData = potData & "\nmsgid \"" & translation.key & "\"\nmsgstr \"\"\n"
 
   writeFile(joinPath(cfg.basePath, cfg.outputPath), potData)
 

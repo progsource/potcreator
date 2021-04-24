@@ -99,15 +99,14 @@ proc getTranslationsFromDb(basePath: string, db: SQLiteDb): seq[Output] =
   let dbconnection = open(filename, "", "", "")
 
   for table in db.tables:
-    let sqlSelect = sql(join(["SELECT ", join(table.columns, ", "), " FROM ",
-        table.name], ""))
+    let sqlSelect = sql("SELECT " & join(table.columns, ", ") & " FROM " & table.name)
     for row in dbconnection.fastRows(sqlSelect):
       var i: int = 0
       for column in row:
         var translation = Output.new
         translation.key = column
-        translation.extract.add(join([db.path, " table: ", table.name,
-            " column: ", table.columns[i]], ""))
+        translation.extract.add(db.path & " table: " & table.name &
+            " column: " & table.columns[i])
         i += 1
         result.add(translation)
 
