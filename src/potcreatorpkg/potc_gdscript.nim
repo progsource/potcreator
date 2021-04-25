@@ -82,7 +82,7 @@ proc getTranslationsFromFile(basePath: string, path: string): ThreadOut =
 
     for m in matches:
       var outp = Output.new
-      outp.src.add(join([filename, ":", intToStr(lineNumber)], ""))
+      outp.src.add(filename & ":" & intToStr(lineNumber))
 
       var startSubStringPos = m.find(startSubString) + len(startSubString)
       outp.key = m.substr(startSubStringPos, len(m) - endSubStringSize - 1)
@@ -91,7 +91,7 @@ proc getTranslationsFromFile(basePath: string, path: string): ThreadOut =
 
 proc getTranslations*(cfg: Config): seq[Output] =
   ## Takes the potcreator config and outputs a sequence of translations
-  var gdscriptConfig = getModuleConfig(cfg)
+  let gdscriptConfig = getModuleConfig(cfg)
 
   if gdscriptConfig.isNil or len(gdscriptConfig.paths) == 0:
     return
