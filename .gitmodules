@@ -1,0 +1,9 @@
+[submodule "libs/rxterm"]
+	path = libs/rxterm
+	url = https://github.com/LoopPerfect/rxterm.git
+[submodule "libs/json"]
+	path = libs/json
+	url = https://github.com/nlohmann/json.git
+[submodule "libs/argh"]
+	path = libs/argh
+	url = https://github.com/adishavit/argh.git
