@@ -3,3 +3,5 @@ potcreator.exe
 *.obj
 *.o
 .sconsign.dblite
+.idea
+

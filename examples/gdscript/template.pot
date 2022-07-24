@@ -2,7 +2,6 @@
 msgid ""
 msgstr ""
 
-
 #: scripts/example.gd:23
 #: scripts/example.gd:26
 #: scripts/subfolder/example3.gd:23
@@ -11,10 +10,6 @@ msgstr ""
 
 #: scripts/example.gd:24
 msgid "This might display somewhere"
-msgstr ""
-
-#: scripts/subfolder/example3.gd:24
-msgid "black"
 msgstr ""
 
 #: scripts/subfolder/example3.gd:24
