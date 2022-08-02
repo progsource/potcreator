@@ -1,7 +1,5 @@
-potcreator.exe
-./potcreator
 *.obj
 *.o
 .sconsign.dblite
 .idea
-
+build
