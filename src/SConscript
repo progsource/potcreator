@@ -1,0 +1,4 @@
+Import("env")
+env["CPPPATH"].append('#include')
+
+env.Program('#build/potcreator', Glob('*.cpp'))

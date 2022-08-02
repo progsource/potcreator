@@ -1,1 +1,1 @@
-nimble build potcreator
+scons -j6

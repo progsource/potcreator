@@ -1,11 +1,11 @@
 env=Environment(
-    CPPPATH='include;libs/json/single_include;libs/rxterm/include;libs/argh',
+    CPPPATH=[],
     # CPPDEFINES=['foo'],
     # LIBS=['bar'],
     CCFLAGS=['-pthread', '-O2', '-Wall'],
     tools = ["mingw"],
     SCONS_CXX_STANDARD='c++20')
+Export('env')
 
-env.Program('potcreator', Glob('src/*.cpp'))
-
-#Program('potcreator', Glob('src/*.cpp'))
+SConscript('libs/SConscript', variant_dir='build/libs', duplicate=False)
+SConscript('src/SConscript', variant_dir='build/potc', duplicate=False)

@@ -2,8 +2,8 @@
 
 Translations made "easier".
 
-This tool can create `*.pot` files[^1] from different sources. So far 2 are
-implemented: **GDScript** and **SQLite**.
+This tool can create `*.pot` files[^1] from different sources. So far 3 are
+implemented: **GDScript**, **GDScene** and **SQLite**.
 
 It is configurable with a simple JSON file.
 
@@ -16,7 +16,7 @@ might vary though.
 
 ## How to build
 
-**Requirements:** nim and nimble installed
+**Requirements:** C++ 20, Godot 4+
 
 ### Windows
 
@@ -69,6 +69,8 @@ Everything between the quotes will be counted as a translation key.
 Simply put into `paths` an array of paths where the tool shall look for
 translation keys.
 
+*This only works currently properly with text that has no line-breaks.*
+
 ### GDScene
 
 This module will walk through any given path and check `*.tscn` files for
@@ -89,6 +91,8 @@ everything between the quotes will be counted as a translation key.
   ]
 }
 ```
+
+*This only works currently properly with text that has no line-breaks.*
 
 ### SQLite
 

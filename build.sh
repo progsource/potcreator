@@ -1,2 +1,2 @@
 #!/bin/bash
-nimble build potcreator
+scons -j6

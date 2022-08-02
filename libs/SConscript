@@ -1,0 +1,4 @@
+Import("env")
+env["CPPPATH"].append('#libs/json/single_include')
+env["CPPPATH"].append('#libs/rxterm/include')
+env["CPPPATH"].append('#libs/argh')
