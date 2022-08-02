@@ -1,6 +1,7 @@
 #include "potcreator/potcreator.h"
 
 #include <iostream>
+#include <filesystem>
 
 #include "rxterm/terminal.hpp"
 #include "rxterm/style.hpp"
@@ -89,13 +90,29 @@ void updateTerminalModuleProgress(uint32_t progress)
 
 struct PotCreator::Pimpl
 {
+  Config cfg;
   rxterm::VirtualTerminal vt;
+  uint32_t modulesDone = 0;
+  std::vector<Output> translations;
 
   unsigned getTerminalWidth()
   {
     unsigned w = rxterm::VirtualTerminal::width();
     if (!w) w = 80;
     return w;
+  }
+
+  template <typename T>
+  void fetchTranslationsForModule()
+  {
+    if (cfg.hasModule(T::MODULE_NAME))
+    {
+      std::vector<Output> moduleranslations = getTranslationsFromModule<T>(cfg);
+      mergeOutput(translations, moduleranslations);
+      modulesDone++;
+
+      updateTerminalModuleProgress(modulesDone);
+    }
   }
 };
 
@@ -139,12 +156,8 @@ int PotCreator::run(int argc, char** argv)
     return 1; // TODO: use enum value for return value
   }
 
-  auto cfg = ps::potcreator::getConfigFromFile(path);
-  cfg.isVerbose = isVerbose;
-
-  std::vector<Output> translations;
-
-  uint32_t modulesDone = 0;
+  pimpl->cfg = ps::potcreator::getConfigFromFile(path);
+  pimpl->cfg.isVerbose = isVerbose;
 
   {
     TerminalHandle terminal;
@@ -152,32 +165,20 @@ int PotCreator::run(int argc, char** argv)
     Progress modulesProgress;
     modulesProgress.id = TERMINAL_MODULES_ID;
     modulesProgress.displayName = "Modules";
-    modulesProgress.max = cfg.modules.size();
-    modulesProgress.current = modulesDone;
+    modulesProgress.max = pimpl->cfg.modules.size();
+    modulesProgress.current = pimpl->modulesDone;
     terminal->addProgress(modulesProgress);
   }
 
-  if (cfg.hasModule(GDScriptModule::MODULE_NAME))
-  {
-    std::vector<Output> gdscriptTranslations = getTranslationsFromModule<GDScriptModule>(cfg);
-    mergeOutput(translations, gdscriptTranslations);
-    modulesDone++;
+  pimpl->fetchTranslationsForModule<GDScriptModule>();
+  pimpl->fetchTranslationsForModule<GDSceneModule>();
 
-    updateTerminalModuleProgress(modulesDone);
-  }
+  genPot(pimpl->cfg, pimpl->translations);
 
-  if (cfg.hasModule(GDSceneModule::MODULE_NAME))
-  {
-    std::vector<Output> gdsceneTranslations = getTranslationsFromModule<GDSceneModule>(cfg);
-    mergeOutput(translations, gdsceneTranslations);
-    modulesDone++;
+  std::filesystem::path outputFile = pimpl->cfg.basePath / pimpl->cfg.outputPath.relative_path();
+  outputFile.make_preferred();
 
-    updateTerminalModuleProgress(modulesDone);
-  }
-
-  genPot(cfg, translations);
-
-  std::cout << cfg.basePath / cfg.outputPath.relative_path() << " generated" << std::endl;
+  std::cout << outputFile << " generated" << std::endl;
 
   return 0;
 }
