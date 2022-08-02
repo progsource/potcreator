@@ -1,4 +1,4 @@
-#include "potcreator/potcreator_gdscript.h"
+#include "potcreator/potcreator_gdscene.h"
 
 #include <sstream>
 #include <fstream>
@@ -11,29 +11,28 @@
 #include "potcreator/potcreator_threadpool.h"
 #include "potcreator/potcreator_terminal.h"
 
-// TODO: use rxterm for output
 namespace ps {
 namespace potcreator {
 
-const std::string GDScriptModule::MODULE_NAME = "gdscript";
+const std::string GDSceneModule::MODULE_NAME = "gdscene";
 
 namespace {
 
-struct GDScriptConfig
+struct GDSceneConfig
 {
   std::vector<std::string> paths;
 };
 
-GDScriptConfig getModuleConfig(const Config& cfg)
+GDSceneConfig getModuleConfig(const Config& cfg)
 {
-  GDScriptConfig gdScriptCfg;
+  GDSceneConfig gdSceneCfg;
 
-  if (!cfg.hasModule(GDScriptModule::MODULE_NAME))
+  if (!cfg.hasModule(GDSceneModule::MODULE_NAME))
   {
-    return gdScriptCfg;
+    return gdSceneCfg;
   }
 
-  std::stringstream i(cfg.moduleData.at(GDScriptModule::MODULE_NAME));
+  std::stringstream i(cfg.moduleData.at(GDSceneModule::MODULE_NAME));
   nlohmann::json j;
   i >> j;
 
@@ -45,19 +44,18 @@ GDScriptConfig getModuleConfig(const Config& cfg)
     auto jsub = *it;
     assert(jsub.is_string());
 
-    gdScriptCfg.paths.push_back(jsub.get<std::string>());
+    gdSceneCfg.paths.push_back(jsub.get<std::string>());
   }
 
-  return gdScriptCfg;
+  return gdSceneCfg;
 }
 
 std::vector<Output> getTranslationsFromFile(std::filesystem::path basePath, std::filesystem::path path)
 {
-  static const std::regex re("[^a-zA-z0-9_]+(tr\\(\"([^!\\\"\"\\)]*)\"\\))");
+  static const std::regex re("text = \"([^~].*)\"");
   static const std::regex replaceBackslash("\\\\");
-  static const std::string startSubString = "tr(\"";
+  static const std::string startSubString = "text =";
   static const size_t startSubStringSize = startSubString.size();
-  static const std::string endSubString = "\")";
 
   std::vector<Output> out;
 
@@ -75,11 +73,6 @@ std::vector<Output> getTranslationsFromFile(std::filesystem::path basePath, std:
   while(getline(file, line)) {
     lineNumber++;
 
-    if (line[0] == '#')
-    {
-      continue;
-    }
-
     std::regex_search(line, m, re);
 
     for (const auto& x : m)
@@ -91,13 +84,12 @@ std::vector<Output> getTranslationsFromFile(std::filesystem::path basePath, std:
         continue;
       }
 
-      if (match.substr(0, startSubStringSize) != startSubString)
+      if (match.substr(0, startSubStringSize) == startSubString)
       {
         continue;
       }
 
-      size_t endSubStringPos = match.find(endSubString);
-      std::string key = match.substr(startSubStringSize, endSubStringPos - startSubStringSize);
+      std::string key = match;
 
       if (key.empty())
       {
@@ -124,7 +116,7 @@ std::vector<Output> getTranslationsFromFile(std::filesystem::path basePath, std:
 
   {
     TerminalHandle terminal;
-    terminal->incrementProgress(2);
+    terminal->incrementProgress(3);
   }
 
   return out;
@@ -132,14 +124,14 @@ std::vector<Output> getTranslationsFromFile(std::filesystem::path basePath, std:
 
 } // empty namespace
 
-GDScriptModule::~GDScriptModule()
+GDSceneModule::~GDSceneModule()
 {}
 
-std::vector<Output> GDScriptModule::getTranslations(const Config& cfg) const
+std::vector<Output> GDSceneModule::getTranslations(const Config& cfg) const
 {
-  GDScriptConfig gdScriptCfg = getModuleConfig(cfg);
+  GDSceneConfig gdSceneCfg = getModuleConfig(cfg);
 
-  if (gdScriptCfg.paths.empty())
+  if (gdSceneCfg.paths.empty())
   {
     return {};
   }
@@ -149,7 +141,7 @@ std::vector<Output> GDScriptModule::getTranslations(const Config& cfg) const
   ThreadPool<std::vector<Output>, 3> pool;
   uint32_t taskCount = 0;
 
-  for (const std::string& dirPath : gdScriptCfg.paths)
+  for (const std::string& dirPath : gdSceneCfg.paths)
   {
     std::filesystem::path path = cfg.basePath / std::filesystem::path(dirPath).relative_path();
     path = path.make_preferred();
@@ -162,14 +154,14 @@ std::vector<Output> GDScriptModule::getTranslations(const Config& cfg) const
         continue;
       }
 
-      if (file.path().extension() != ".gd")
+      if (file.path().extension() != ".tscn")
       {
         continue;
       }
 
       if (cfg.isVerbose)
       {
-        std::cout << "gdscript get translations from: " << file.path() << std::endl;
+        std::cout << "gdscene get translations from: " << file.path() << std::endl;
       }
 
       taskCount++;
@@ -184,8 +176,8 @@ std::vector<Output> GDScriptModule::getTranslations(const Config& cfg) const
     TerminalHandle terminal;
 
     Progress taskProgress;
-    taskProgress.id = 2;
-    taskProgress.displayName = "GDScript Module";
+    taskProgress.id = 3;
+    taskProgress.displayName = "GDScene Module";
     taskProgress.max = taskCount;
     taskProgress.current = 0;
 

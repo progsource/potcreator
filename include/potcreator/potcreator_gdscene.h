@@ -1,5 +1,5 @@
-#ifndef PS_POTCREATOR_GDSCRIPT_H
-#define PS_POTCREATOR_GDSCRIPT_H
+#ifndef PS_POTCREATOR_GDSCENE_H
+#define PS_POTCREATOR_GDSCENE_H
 
 #include <string>
 #include <vector>
@@ -9,13 +9,13 @@
 namespace ps {
 namespace potcreator {
 
-class GDScriptModule : public Module
+class GDSceneModule : public Module
 {
 public:
   static const std::string MODULE_NAME;
 
-  GDScriptModule() = default;
-  virtual ~GDScriptModule();
+  GDSceneModule() = default;
+  virtual ~GDSceneModule();
 
   std::vector<Output> getTranslations(const Config& cfg) const override;
 };
@@ -23,4 +23,4 @@ public:
 } // namespace potcreator
 } // namespace ps
 
-#endif // PS_POTCREATOR_GDSCRIPT_H
+#endif // PS_POTCREATOR_GDSCENE_H

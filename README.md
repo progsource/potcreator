@@ -69,6 +69,27 @@ Everything between the quotes will be counted as a translation key.
 Simply put into `paths` an array of paths where the tool shall look for
 translation keys.
 
+### GDScene
+
+This module will walk through any given path and check `*.tscn` files for
+`text = ""`. It will leave out texts that start with `~`. Besides that
+everything between the quotes will be counted as a translation key.
+
+```json
+{
+  "output" : "/template.pot",
+  "displaySrc" : true,
+  "modules" : [
+    {
+      "name" : "gdscene",
+      "data" : {
+        "paths" : ["/scenes"]
+      }
+    }
+  ]
+}
+```
+
 ### SQLite
 
 Databases are a little bit more complex, but this should still be as

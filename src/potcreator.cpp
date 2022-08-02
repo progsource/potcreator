@@ -15,8 +15,10 @@
 
 #include "potcreator/potcreator_config.h"
 #include "potcreator/potcreator_gdscript.h"
+#include "potcreator/potcreator_gdscene.h"
 #include "potcreator/potcreator_output.h"
 #include "potcreator/potcreator_gen.h"
+#include "potcreator/potcreator_terminal.h"
 
 #if defined(_WIN32) || defined(WIN32) || defined(__CYGWIN__) || defined(__MINGW32__) || defined(__BORLANDC__)
 #define OS_WIN
@@ -127,11 +129,45 @@ int PotCreator::run(int argc, char** argv)
 
   std::vector<Output> translations;
 
+  uint32_t modulesDone = 0;
+
+  {
+    TerminalHandle terminal;
+
+    Progress modulesProgress;
+    modulesProgress.id = 1;
+    modulesProgress.displayName = "Modules";
+    modulesProgress.max = cfg.modules.size();
+    modulesProgress.current = modulesDone;
+    terminal->addProgress(modulesProgress);
+  }
+
   if (cfg.hasModule(GDScriptModule::MODULE_NAME))
   {
     GDScriptModule gdscriptModule;
     std::vector<Output> gdscriptTranslations = gdscriptModule.getTranslations(cfg);
     mergeOutput(translations, gdscriptTranslations);
+    modulesDone++;
+
+    {
+      TerminalHandle terminal;
+
+      terminal->updateProgress(1, modulesDone);
+    }
+  }
+
+  if (cfg.hasModule(GDSceneModule::MODULE_NAME))
+  {
+    GDSceneModule gdsceneModule;
+    std::vector<Output> gdsceneTranslations = gdsceneModule.getTranslations(cfg);
+    mergeOutput(translations, gdsceneTranslations);
+    modulesDone++;
+
+    {
+      TerminalHandle terminal;
+
+      terminal->updateProgress(1, modulesDone);
+    }
   }
 
   genPot(cfg, translations);
