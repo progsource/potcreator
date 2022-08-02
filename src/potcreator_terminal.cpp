@@ -26,5 +26,33 @@ void Terminal::returnInstance()
   Terminal::instanceMutex.unlock();
 }
 
+void Terminal::addProgress(const Progress& progress)
+{
+  this->progress[progress.id] = progress;
+  this->displayProgress(progress.id);
+}
+
+void Terminal::updateProgress(uint32_t id, uint32_t current)
+{
+  if (!this->progress.count(id))
+  {
+    return;
+  }
+
+  this->progress.at(id).current = current;
+  this->displayProgress(id);
+}
+
+void Terminal::incrementProgress(uint32_t id)
+{
+  if (!this->progress.count(id))
+  {
+    return;
+  }
+
+  this->progress.at(id).current++;
+  this->displayProgress(id);
+}
+
 } // namespace potcreator
 } // namespace ps

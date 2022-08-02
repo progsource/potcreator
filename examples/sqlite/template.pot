@@ -2,11 +2,10 @@
 msgid ""
 msgstr ""
 
-
-#. /data.db table: examples column: name
+#. data.db table: examples column: name
 msgid "Testing"
 msgstr ""
 
-#. /data.db table: examples column: name
+#. data.db table: examples column: name
 msgid "Text from db"
 msgstr ""

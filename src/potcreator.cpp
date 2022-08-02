@@ -17,6 +17,7 @@
 #include "potcreator/potcreator_config.h"
 #include "potcreator/potcreator_gdscript.h"
 #include "potcreator/potcreator_gdscene.h"
+#include "potcreator/potcreator_sqlite.h"
 #include "potcreator/potcreator_output.h"
 #include "potcreator/potcreator_gen.h"
 #include "potcreator/potcreator_terminal.h"
@@ -181,6 +182,7 @@ int PotCreator::run(int argc, char** argv)
 
   pimpl->fetchTranslationsForModule<GDScriptModule>();
   pimpl->fetchTranslationsForModule<GDSceneModule>();
+  pimpl->fetchTranslationsForModule<SqliteModule>();
 
   genPot(pimpl->cfg, pimpl->translations);
 
@@ -191,7 +193,6 @@ int PotCreator::run(int argc, char** argv)
 
   return 0;
 }
-
 
 } // namespace potcreator
 } // namespace ps

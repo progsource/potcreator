@@ -2,7 +2,6 @@
 msgid ""
 msgstr ""
 
-
 #: scripts/example.gd:23
 #: scripts/example.gd:26
 msgid "Hello World"
@@ -12,30 +11,35 @@ msgstr ""
 msgid "This might display somewhere"
 msgstr ""
 
-#. /multi.db table: examples column: name
+#: scenes/test.tscn:18
+msgid "[b]some bold text[/b] and some non-bold text"
+msgstr ""
+
+#. multi.db table: examples column: name
 msgid "bakery"
 msgstr ""
 
-#. /multi.db table: testing column: category
+#. multi.db table: testing column: category
 msgid "cat"
 msgstr ""
 
-#. /multi.db table: examples column: name
+#. multi.db table: examples column: name
 msgid "coffee shop"
 msgstr ""
 
-#. /multi.db table: testing column: word
+#. multi.db table: testing column: word
 msgid "dog"
 msgstr ""
 
-#. /multi.db table: testing column: category
+#. multi.db table: testing column: category
 msgid "door"
 msgstr ""
 
-#. /multi.db table: testing column: word
+#. multi.db table: testing column: word
 msgid "key"
 msgstr ""
 
+#: scenes/test.tscn:10
 #: scripts2/example2.gd:24
 msgid "oh, hey"
 msgstr ""

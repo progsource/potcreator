@@ -9,6 +9,12 @@
       }
     },
     {
+      "name" : "gdscene",
+      "data" : {
+        "paths" : ["/scenes"]
+      }
+    },
+    {
       "name": "sqlite",
       "data" : {
         "dbs" : [

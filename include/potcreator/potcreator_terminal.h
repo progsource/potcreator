@@ -25,33 +25,9 @@ public:
   static Terminal* takeInstance();
   static void returnInstance();
 
-  void addProgress(const Progress& progress)
-  {
-    this->progress[progress.id] = progress;
-    this->displayProgress(progress.id);
-  }
-
-  void updateProgress(uint32_t id, uint32_t current)
-  {
-    if (!this->progress.count(id))
-    {
-      return;
-    }
-
-    this->progress.at(id).current = current;
-    this->displayProgress(id);
-  }
-
-  void incrementProgress(uint32_t id)
-  {
-    if (!this->progress.count(id))
-    {
-      return;
-    }
-
-    this->progress.at(id).current++;
-    this->displayProgress(id);
-  }
+  void addProgress(const Progress& progress);
+  void updateProgress(uint32_t id, uint32_t current);
+  void incrementProgress(uint32_t id);
 
 private:
   static std::mutex instanceMutex;
@@ -63,8 +39,8 @@ private:
   void displayProgress(uint32_t id)
   {
     std::cout << this->progress.at(id).displayName << ": " <<
-      this->progress.at(id).current << "/" << this->progress.at(id).max <<
-      std::endl;
+    this->progress.at(id).current << "/" << this->progress.at(id).max <<
+    std::endl;
   }
 };
 
