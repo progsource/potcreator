@@ -58,6 +58,15 @@ void showHelp(rxterm::VirtualTerminal & vt, unsigned const w)
     },
     rxterm::FlowLayout<>{
       rxterm::Text("\t"),
+      rxterm::Text({rxterm::Color::Black, rxterm::FontColor::Cyan, rxterm::Font::Bold}, "-p, --path"),
+      rxterm::Text("\t\t"),
+      rxterm::StackLayout<>{
+        rxterm::Text("Path in which a \".potcreator.json\" file exists"),
+        rxterm::Text("to use it for generating the *.pot file."),
+      },
+    },
+    rxterm::FlowLayout<>{
+      rxterm::Text("\t"),
       rxterm::Text({rxterm::Color::Black, rxterm::FontColor::Cyan, rxterm::Font::Bold}, "-v, --verbose"),
       rxterm::Text("\t\t"),
       rxterm::Text("Show verbose output while running."),

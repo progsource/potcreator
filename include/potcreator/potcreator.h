@@ -7,7 +7,14 @@
 namespace ps {
 namespace potcreator {
 
-const std::string VERSION = "0.3.0";
+#define STR_(x) #x
+#define STR(x) STR_(x)
+
+#ifndef POTCREATOR_VERSION
+#define POTCREATOR_VERSION "unknown"
+#endif
+
+const std::string VERSION = STR(POTCREATOR_VERSION);
 
 class PotCreator
 {

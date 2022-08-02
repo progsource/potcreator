@@ -16,7 +16,11 @@ might vary though.
 
 ## How to build
 
-**Requirements:** C++ 20, Godot 4+
+**Requirements:**
+
+* C++ 20
+  * Windows: mingw (untested with others)
+* Godot 4+ project for GDScript and GDScene modules
 
 ### Windows
 
