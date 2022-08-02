@@ -1,0 +1,11 @@
+# Don't remove the two lines below, they're required for gettext to work correctly.
+msgid ""
+msgstr ""
+
+#: test.tscn:10
+msgid "Some example text that shall be translated"
+msgstr ""
+
+#: test.tscn:18
+msgid "[b]some bold text[/b] and some non-bold text"
+msgstr ""

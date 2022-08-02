@@ -1,0 +1,12 @@
+{
+  "output" : "/template.pot",
+  "displaySrc" : true,
+  "modules" : [
+    {
+      "name" : "gdscene",
+      "data" : {
+        "paths" : ["/"]
+      }
+    }
+  ]
+}
