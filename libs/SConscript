@@ -1,4 +1,8 @@
-Import("env")
-env["CPPPATH"].append('#libs/json/single_include')
-env["CPPPATH"].append('#libs/rxterm/include')
-env["CPPPATH"].append('#libs/argh')
+Import('env')
+env['CPPPATH'].append('#libs/json/single_include')
+env['CPPPATH'].append('#libs/rxterm/include')
+env['CPPPATH'].append('#libs/argh')
+env['CPPPATH'].append('#libs/sqlite')
+env['LIBPATH'].append('#build/libs')
+
+env.Library('sqlite', Glob('sqlite/*.c'))

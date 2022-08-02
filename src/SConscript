@@ -1,4 +1,8 @@
-Import("env")
-env["CPPPATH"].append('#include')
+Import('env')
 
-env.Program('#build/potcreator', Glob('*.cpp'))
+potc_env = env.Clone()
+
+potc_env['CPPPATH'].append('#include')
+potc_env['LIBS'].append('sqlite')
+
+potc_env.Program('#build/potcreator', Glob('*.cpp'))
