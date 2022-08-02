@@ -13,6 +13,7 @@ class GDScriptModule : public Module
 {
 public:
   static const std::string MODULE_NAME;
+  static const uint32_t TERMINAL_ID;
 
   GDScriptModule() = default;
   virtual ~GDScriptModule();

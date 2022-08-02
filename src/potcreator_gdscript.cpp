@@ -16,6 +16,7 @@ namespace ps {
 namespace potcreator {
 
 const std::string GDScriptModule::MODULE_NAME = "gdscript";
+const uint32_t GDScriptModule::TERMINAL_ID = 2;
 
 namespace {
 
@@ -124,7 +125,7 @@ std::vector<Output> getTranslationsFromFile(std::filesystem::path basePath, std:
 
   {
     TerminalHandle terminal;
-    terminal->incrementProgress(2);
+    terminal->incrementProgress(GDScriptModule::TERMINAL_ID);
   }
 
   return out;
@@ -184,7 +185,7 @@ std::vector<Output> GDScriptModule::getTranslations(const Config& cfg) const
     TerminalHandle terminal;
 
     Progress taskProgress;
-    taskProgress.id = 2;
+    taskProgress.id = GDScriptModule::TERMINAL_ID;
     taskProgress.displayName = "GDScript Module";
     taskProgress.max = taskCount;
     taskProgress.current = 0;

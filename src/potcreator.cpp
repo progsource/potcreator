@@ -29,6 +29,8 @@ namespace potcreator {
 
 namespace {
 
+static const uint32_t TERMINAL_MODULES_ID = 1;
+
 void clear()
 {
   std::cout << "\033[0m" << std::endl;
@@ -68,6 +70,19 @@ void showHelp(rxterm::VirtualTerminal & vt, unsigned const w)
   });
 
   clear();
+}
+
+template <typename T>
+std::vector<Output> getTranslationsFromModule(Config& cfg)
+{
+  T module;
+  return module.getTranslations(cfg);
+}
+
+void updateTerminalModuleProgress(uint32_t progress)
+{
+  TerminalHandle terminal;
+  terminal->updateProgress(TERMINAL_MODULES_ID, progress);
 }
 
 } // empty namespace
@@ -120,7 +135,7 @@ int PotCreator::run(int argc, char** argv)
 
   if (path.empty())
   {
-    // TODO: display red error
+    std::cout << "empty path" << std::endl;
     return 1; // TODO: use enum value for return value
   }
 
@@ -135,7 +150,7 @@ int PotCreator::run(int argc, char** argv)
     TerminalHandle terminal;
 
     Progress modulesProgress;
-    modulesProgress.id = 1;
+    modulesProgress.id = TERMINAL_MODULES_ID;
     modulesProgress.displayName = "Modules";
     modulesProgress.max = cfg.modules.size();
     modulesProgress.current = modulesDone;
@@ -144,30 +159,20 @@ int PotCreator::run(int argc, char** argv)
 
   if (cfg.hasModule(GDScriptModule::MODULE_NAME))
   {
-    GDScriptModule gdscriptModule;
-    std::vector<Output> gdscriptTranslations = gdscriptModule.getTranslations(cfg);
+    std::vector<Output> gdscriptTranslations = getTranslationsFromModule<GDScriptModule>(cfg);
     mergeOutput(translations, gdscriptTranslations);
     modulesDone++;
 
-    {
-      TerminalHandle terminal;
-
-      terminal->updateProgress(1, modulesDone);
-    }
+    updateTerminalModuleProgress(modulesDone);
   }
 
   if (cfg.hasModule(GDSceneModule::MODULE_NAME))
   {
-    GDSceneModule gdsceneModule;
-    std::vector<Output> gdsceneTranslations = gdsceneModule.getTranslations(cfg);
+    std::vector<Output> gdsceneTranslations = getTranslationsFromModule<GDSceneModule>(cfg);
     mergeOutput(translations, gdsceneTranslations);
     modulesDone++;
 
-    {
-      TerminalHandle terminal;
-
-      terminal->updateProgress(1, modulesDone);
-    }
+    updateTerminalModuleProgress(modulesDone);
   }
 
   genPot(cfg, translations);

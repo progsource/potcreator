@@ -159,7 +159,7 @@ potcreator is available under the MIT license. For more info, check out the
     `*.pot` files from different sources and merge them together), and nothing
     breaks, the likelihood of getting your pull request accepted is quiet high.
   * Please try to stick with the projects code style.
-  * Use nimpretty after you made your changes. (`nimpretty file.nim`)
+  * Use uncrustify after you made your changes. (TODO: add uncrustify cfg file)
 * **Create an issue:**
   * Found a bug / have a problem?
     * Give minimum information about where you are running potcreator (Windows, Linux, Mac)
