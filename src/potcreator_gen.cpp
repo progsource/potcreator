@@ -38,7 +38,8 @@ void genPot(const Config& cfg, const std::vector<Output>& translations)
     potData += "\nmsgid \"" + out.key + "\"\nmsgstr \"\"\n";
   }
 
-  const std::filesystem::path outFile = cfg.basePath / cfg.outputPath.relative_path();
+  std::filesystem::path outFile = cfg.basePath / cfg.outputPath.relative_path();
+  outFile.make_preferred();
 
   assert(std::filesystem::is_directory(outFile.parent_path()));
 

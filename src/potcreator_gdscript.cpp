@@ -175,15 +175,14 @@ std::vector<Output> GDScriptModule::getTranslations(const Config& cfg) const
     }
   }
 
+  Progress taskProgress;
+  taskProgress.id = GDScriptModule::TERMINAL_ID;
+  taskProgress.displayName = "GDScript Module";
+  taskProgress.max = taskCount;
+  taskProgress.current = 0;
+
   {
     TerminalHandle terminal;
-
-    Progress taskProgress;
-    taskProgress.id = GDScriptModule::TERMINAL_ID;
-    taskProgress.displayName = "GDScript Module";
-    taskProgress.max = taskCount;
-    taskProgress.current = 0;
-
     terminal->addProgress(taskProgress);
   }
 

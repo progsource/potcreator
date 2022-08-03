@@ -167,15 +167,14 @@ std::vector<Output> GDSceneModule::getTranslations(const Config& cfg) const
     }
   }
 
+  Progress taskProgress;
+  taskProgress.id = GDSceneModule::TERMINAL_ID;
+  taskProgress.displayName = "GDScene Module";
+  taskProgress.max = taskCount;
+  taskProgress.current = 0;
+
   {
     TerminalHandle terminal;
-
-    Progress taskProgress;
-    taskProgress.id = GDSceneModule::TERMINAL_ID;
-    taskProgress.displayName = "GDScene Module";
-    taskProgress.max = taskCount;
-    taskProgress.current = 0;
-
     terminal->addProgress(taskProgress);
   }
 

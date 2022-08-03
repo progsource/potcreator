@@ -3,15 +3,6 @@
 #include <iostream>
 #include <filesystem>
 
-#include "rxterm/terminal.hpp"
-#include "rxterm/style.hpp"
-#include "rxterm/image.hpp"
-#include "rxterm/components/text.hpp"
-#include "rxterm/components/stacklayout.hpp"
-#include "rxterm/components/flowlayout.hpp"
-#include "rxterm/components/progress.hpp"
-#include "rxterm/components/maxwidth.hpp"
-
 #include "argh.h"
 
 #include "potcreator/potcreator_config.h"
@@ -34,54 +25,9 @@ namespace {
 
 static const uint32_t TERMINAL_MODULES_ID = 1;
 
-void clear()
-{
-  std::cout << "\033[0m" << std::endl;
-}
-
-auto renderToTerm = [](auto const& vt, unsigned const w, rxterm::Component const& c) {
-  return vt.flip(c.render(w).toString());
-};
-
 void showVersion()
 {
   std::cout << "potcreator version " << VERSION << std::endl;
-}
-
-void showHelp(rxterm::VirtualTerminal & vt, unsigned const w)
-{
-  vt = renderToTerm(vt, w, rxterm::StackLayout<>{
-    rxterm::Text({rxterm::Color::Black, rxterm::FontColor::White, rxterm::Font::Bold}, "potcreator"),
-    rxterm::FlowLayout<>{
-      rxterm::Text("\t"),
-      rxterm::Text({rxterm::Color::Black, rxterm::FontColor::Cyan, rxterm::Font::Bold}, "-h, --help"),
-      rxterm::Text("\t\t"),
-      rxterm::Text("Show this help."),
-    },
-    rxterm::FlowLayout<>{
-      rxterm::Text("\t"),
-      rxterm::Text({rxterm::Color::Black, rxterm::FontColor::Cyan, rxterm::Font::Bold}, "-p, --path"),
-      rxterm::Text("\t\t"),
-      rxterm::StackLayout<>{
-        rxterm::Text("Path in which a \".potcreator.json\" file exists"),
-        rxterm::Text("to use it for generating the *.pot file."),
-      },
-    },
-    rxterm::FlowLayout<>{
-      rxterm::Text("\t"),
-      rxterm::Text({rxterm::Color::Black, rxterm::FontColor::Cyan, rxterm::Font::Bold}, "-v, --verbose"),
-      rxterm::Text("\t\t"),
-      rxterm::Text("Show verbose output while running."),
-    },
-    rxterm::FlowLayout<>{
-      rxterm::Text("\t"),
-      rxterm::Text({rxterm::Color::Black, rxterm::FontColor::Cyan, rxterm::Font::Bold}, "-V, --version"),
-      rxterm::Text("\t\t"),
-      rxterm::Text("Show current version."),
-    },
-  });
-
-  clear();
 }
 
 template <typename T>
@@ -102,24 +48,16 @@ void updateTerminalModuleProgress(uint32_t progress)
 struct PotCreator::Pimpl
 {
   Config cfg;
-  rxterm::VirtualTerminal vt;
   uint32_t modulesDone = 0;
   std::vector<Output> translations;
-
-  unsigned getTerminalWidth()
-  {
-    unsigned w = rxterm::VirtualTerminal::width();
-    if (!w) w = 80;
-    return w;
-  }
 
   template <typename T>
   void fetchTranslationsForModule()
   {
     if (cfg.hasModule(T::MODULE_NAME))
     {
-      std::vector<Output> moduleranslations = getTranslationsFromModule<T>(cfg);
-      mergeOutput(translations, moduleranslations);
+      std::vector<Output> moduleTranslations = getTranslationsFromModule<T>(cfg);
+      mergeOutput(translations, moduleTranslations);
       modulesDone++;
 
       updateTerminalModuleProgress(modulesDone);
@@ -144,9 +82,9 @@ int PotCreator::run(int argc, char** argv)
   cmdl.add_params({"-h", "--help", "-p", "--path", "-v", "--verbose", "-V", "--version"});
   cmdl.parse(argc, argv);
 
-  const bool isVersion = cmdl[{ "-V", "--version" }];
-  const bool isVerbose = cmdl[{ "-v", "--verbose" }];
-  const bool isHelp = cmdl[{ "-h", "--help" }];
+  const bool isVersion = cmdl[{"-V", "--version"}];
+  const bool isVerbose = cmdl[{"-v", "--verbose"}];
+  const bool isHelp = cmdl[{"-h", "--help"}];
   const std::string path = cmdl("p").str().empty() ? cmdl("path").str() : cmdl("p").str();
 
   if (isVersion)
@@ -157,7 +95,13 @@ int PotCreator::run(int argc, char** argv)
 
   if (isHelp)
   {
-    showHelp(this->pimpl->vt, this->pimpl->getTerminalWidth());
+    TerminalHandle terminal;
+    terminal->showHelp({
+      {"-h, --help", {"Show this help."}},
+      {"-p, --path", {"Path in which a \".potcreator.json\" file exists", "to use it for generating the *.pot file."}},
+      {"-v, --verbose", {"Show verbose output while running."}},
+      {"-V, --version", {"Show current version."}}
+    });
     return 0;
   }
 
@@ -170,14 +114,14 @@ int PotCreator::run(int argc, char** argv)
   pimpl->cfg = ps::potcreator::getConfigFromFile(path);
   pimpl->cfg.isVerbose = isVerbose;
 
+  Progress modulesProgress;
+  modulesProgress.id = TERMINAL_MODULES_ID;
+  modulesProgress.displayName = "Modules";
+  modulesProgress.max = pimpl->cfg.modules.size();
+  modulesProgress.current = pimpl->modulesDone;
+
   {
     TerminalHandle terminal;
-
-    Progress modulesProgress;
-    modulesProgress.id = TERMINAL_MODULES_ID;
-    modulesProgress.displayName = "Modules";
-    modulesProgress.max = pimpl->cfg.modules.size();
-    modulesProgress.current = pimpl->modulesDone;
     terminal->addProgress(modulesProgress);
   }
 

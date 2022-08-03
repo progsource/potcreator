@@ -268,15 +268,14 @@ std::vector<Output> SqliteModule::getTranslations(const Config& cfg) const
     });
   }
 
+  Progress taskProgress;
+  taskProgress.id = SqliteModule::TERMINAL_ID;
+  taskProgress.displayName = "SQLite Module";
+  taskProgress.max = taskCount;
+  taskProgress.current = 0;
+
   {
     TerminalHandle terminal;
-
-    Progress taskProgress;
-    taskProgress.id = SqliteModule::TERMINAL_ID;
-    taskProgress.displayName = "SQLite Module";
-    taskProgress.max = taskCount;
-    taskProgress.current = 0;
-
     terminal->addProgress(taskProgress);
   }
 

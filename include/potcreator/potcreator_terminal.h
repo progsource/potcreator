@@ -4,6 +4,8 @@
 #include <string>
 #include <map>
 #include <mutex>
+#include <vector>
+#include <memory>
 
 #include <iostream>
 
@@ -25,23 +27,23 @@ public:
   static Terminal* takeInstance();
   static void returnInstance();
 
+  void showHelp(const std::map<std::string, std::vector<std::string>>& parameters);
+
   void addProgress(const Progress& progress);
   void updateProgress(uint32_t id, uint32_t current);
   void incrementProgress(uint32_t id);
 
 private:
+  struct Impl;
+  std::unique_ptr<Impl> impl;
+
   static std::mutex instanceMutex;
   static Terminal terminal;
-  std::map<uint32_t, Progress> progress;
 
-  Terminal() = default;
+  Terminal();
+  ~Terminal();
 
-  void displayProgress(uint32_t id)
-  {
-    std::cout << this->progress.at(id).displayName << ": " <<
-    this->progress.at(id).current << "/" << this->progress.at(id).max <<
-    std::endl;
-  }
+  void displayProgress(uint32_t id);
 };
 
 /**
