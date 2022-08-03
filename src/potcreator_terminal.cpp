@@ -3,14 +3,16 @@
 #include <iomanip>
 #include <sstream>
 
-#include "rxterm/components/flowlayout.hpp"
-#include "rxterm/components/maxwidth.hpp"
-#include "rxterm/components/progress.hpp"
-#include "rxterm/components/stacklayout.hpp"
-#include "rxterm/components/text.hpp"
-#include "rxterm/image.hpp"
-#include "rxterm/style.hpp"
+// *INDENT-OFF*
 #include "rxterm/terminal.hpp"
+#include "rxterm/style.hpp"
+#include "rxterm/image.hpp"
+#include "rxterm/components/text.hpp"
+#include "rxterm/components/stacklayout.hpp"
+#include "rxterm/components/flowlayout.hpp"
+#include "rxterm/components/progress.hpp"
+#include "rxterm/components/maxwidth.hpp"
+// *INDENT-ON*
 
 #include "potcreator/potcreator_helper.h"
 
