@@ -18,8 +18,9 @@ might vary though.
 
 **Requirements:**
 
+* [SCons](https://scons.org/)
 * C++ 20
-  * Windows: mingw (untested with others)
+  * Windows: [mingw](https://www.mingw-w64.org/) (untested with others)
 * Godot 4+ project for GDScript and GDScene modules
 
 ### Windows
@@ -126,6 +127,10 @@ would then look like this:
 }
 ```
 
+The `jsonPaths` elements are separated by `:`. It doesn't matter what type they
+are (if array, object, etc.). As long as strings are at the end, you will get
+translations keys from them.
+
 For a more detailed example, please refer to the `examples/json` folder.
 
 ### SQLite
@@ -169,7 +174,7 @@ It will make a `SELECT` on all given table `columns` and expects them to be
 
 Call **potcreator** from your terminal and provide it the path to the directory
 in which it can find the `.potcreator.json` file. For example:
-`potcreator path/to/my/folder`.
+`potcreator -p=path/to/my/folder`.
 
 There are some minor flags that you can turn on. More info on those you can get,
 if you call the tools help function: `potcreator -h`.
