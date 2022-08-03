@@ -11,7 +11,6 @@
 #include "potcreator/potcreator_terminal.h"
 #include "potcreator/potcreator_helper.h"
 
-// TODO: use rxterm for output
 namespace ps {
 namespace potcreator {
 

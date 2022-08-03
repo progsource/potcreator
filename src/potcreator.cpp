@@ -108,7 +108,7 @@ int PotCreator::run(int argc, char** argv)
   if (path.empty())
   {
     std::cout << "empty path" << std::endl;
-    return 1; // TODO: use enum value for return value
+    return 1;
   }
 
   pimpl->cfg = ps::potcreator::getConfigFromFile(path);
