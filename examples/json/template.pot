@@ -1,0 +1,29 @@
+# Don't remove the two lines below, they're required for gettext to work correctly.
+msgid ""
+msgstr ""
+
+#. data2/messages.json jsonPath: "messages"
+msgid "A dog likes to bark at a cat."
+msgstr ""
+
+#. data2/messages.json jsonPath: "title"
+msgid "An animal story"
+msgstr ""
+
+#. data/item0.json jsonPath: "items:name"
+#. data/item1.json jsonPath: "items:name"
+msgid "Firepit"
+msgstr ""
+
+#. data/item1.json jsonPath: "items:name"
+msgid "Hoe"
+msgstr ""
+
+#. data/item0.json jsonPath: "items:name"
+#. data2/messages.json jsonPath: "messages"
+msgid "Shovel"
+msgstr ""
+
+#. data/item1.json jsonPath: "items:name"
+msgid "Stone"
+msgstr ""

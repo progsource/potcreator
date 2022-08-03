@@ -2,8 +2,8 @@
 
 Translations made "easier".
 
-This tool can create `*.pot` files[^1] from different sources. So far 3 are
-implemented: **GDScript**, **GDScene** and **SQLite**.
+This tool can create `*.pot` files[^1] from different sources. So far 4 are
+implemented: **GDScript**, **GDScene**, **JSON** and **SQLite**.
 
 It is configurable with a simple JSON file.
 
@@ -97,6 +97,36 @@ everything between the quotes will be counted as a translation key.
 ```
 
 *This only works currently properly with text that has no line-breaks.*
+
+### JSON
+
+JSON files with strings in them also can contain translation keys. For example
+if you had configs for multiple objects in a game. The configuration for these
+would then look like this:
+
+```json
+{
+  "output" : "/template.pot",
+  "displaySrc" : true,
+  "modules" : [
+    {
+      "name" : "json",
+      "data" : {
+        "files" : [
+          {
+            "paths" : ["/data"],
+            "jsonPaths" : [
+              "items:name"
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
+```
+
+For a more detailed example, please refer to the `examples/json` folder.
 
 ### SQLite
 

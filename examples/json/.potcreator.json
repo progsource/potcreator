@@ -1,0 +1,26 @@
+{
+  "output" : "/template.pot",
+  "displaySrc" : true,
+  "modules" : [
+    {
+      "name" : "json",
+      "data" : {
+        "files" : [
+          {
+            "paths" : ["/data"],
+            "jsonPaths" : [
+              "items:name"
+            ]
+          },
+          {
+            "paths" : ["/data2"],
+            "jsonPaths" : [
+              "messages",
+              "title"
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

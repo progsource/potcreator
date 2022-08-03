@@ -218,7 +218,10 @@ std::vector<Output> getTranslationsFromDb(std::filesystem::path basePath, const 
   std::vector<Output> out;
 
   SqliteHandle sqliteHandle;
-  sqliteHandle.open(basePath, path);
+  if (sqliteHandle.open(basePath, path) != 0)
+  {
+    return out;
+  }
 
   for (const auto& table : db.tables)
   {

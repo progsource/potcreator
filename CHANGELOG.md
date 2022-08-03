@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * **ADDED:** argh C++ library dependency
 * **ADDED:** nlohmann json C++ library dependency
 * **ADDED:** rxterm C++ library dependency
+* **ADDED:** GDScene Module
+* **ADDED:** JSON Module
 * **CHANGED:** Reimplement potcreator in C++ with Scons
 
 ## 0.2.0

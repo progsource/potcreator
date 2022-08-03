@@ -1,0 +1,11 @@
+{
+  "items" : [
+    {
+      "name" : "Shovel",
+      "description" : "This shall not show up in the template.pot file."
+    },
+    {
+      "name" : "Firepit"
+    }
+  ]
+}
