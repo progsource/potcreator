@@ -117,7 +117,7 @@ std::vector<Output> getTranslationsFromFile(std::filesystem::path basePath, std:
 
       o.key = key;
       o.src.push_back(pathString + ":" + std::to_string(lineNumber));
-      addOutput(out, o);
+      out.push_back(o);
     }
   }
 

@@ -231,7 +231,7 @@ std::vector<Output> getTranslationsFromDb(std::filesystem::path basePath, const 
     }
 
     const auto tableResult = sqliteHandle.query(table.name, table.columns);
-    out.insert(out.end(), tableResult.begin(), tableResult.end());
+    mergeOutput(out, tableResult);
   }
 
   return out;

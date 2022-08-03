@@ -14,7 +14,6 @@ struct Output
   std::vector<std::string> extract; // other comments
 };
 
-void addOutput(std::vector<Output>& out, Output o);
 void mergeOutput(std::vector<Output>& a, const std::vector<Output>& b);
 std::vector<Output> unifyOutput(const std::vector<Output>& o);
 

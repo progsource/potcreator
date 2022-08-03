@@ -110,7 +110,7 @@ std::vector<Output> fetchElement(nlohmann::json j, std::deque<std::string> jsonP
     for (auto it = j.begin(); it != j.end(); ++it)
     {
       std::vector<Output> jout = fetchElement(*it, jsonPaths);
-      out.insert(out.end(), jout.begin(), jout.end());
+      mergeOutput(out, jout);
     }
     return out;
   }

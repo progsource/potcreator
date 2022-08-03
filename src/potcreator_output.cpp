@@ -16,11 +16,6 @@ void makeUniqueValueVector(std::vector<std::string>& v)
 
 } // empty namespace
 
-void addOutput(std::vector<Output>& out, Output o)
-{
-  out.push_back(o);
-}
-
 void mergeOutput(std::vector<Output>& a, const std::vector<Output>& b)
 {
   a.insert(a.end(), b.begin(), b.end());
