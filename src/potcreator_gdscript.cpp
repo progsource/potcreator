@@ -10,6 +10,7 @@
 #include "potcreator/potcreator_config.h"
 #include "potcreator/potcreator_threadpool.h"
 #include "potcreator/potcreator_terminal.h"
+#include "potcreator/potcreator_helper.h"
 
 // TODO: use rxterm for output
 namespace ps {
@@ -55,7 +56,6 @@ GDScriptConfig getModuleConfig(const Config& cfg)
 std::vector<Output> getTranslationsFromFile(std::filesystem::path basePath, std::filesystem::path path)
 {
   static const std::regex re("[^a-zA-z0-9_]+(tr\\(\"([^!\\\"\"\\)]*)\"\\))");
-  static const std::regex replaceBackslash("\\\\");
   static const std::string startSubString = "tr(\"";
   static const size_t startSubStringSize = startSubString.size();
   static const std::string endSubString = "\")";
@@ -69,6 +69,8 @@ std::vector<Output> getTranslationsFromFile(std::filesystem::path basePath, std:
   if (!file.is_open()) {
     return out;
   }
+
+  const std::string pathString = getDisplayPath(basePath, path);
 
   std::smatch m;
   int32_t lineNumber = 0;
@@ -106,14 +108,6 @@ std::vector<Output> getTranslationsFromFile(std::filesystem::path basePath, std:
       }
 
       Output o;
-
-      std::string pathString = path.u8string().substr(basePath.u8string().size());
-      pathString = std::regex_replace(pathString, replaceBackslash, "/");
-
-      if (pathString[0] == '/')
-      {
-        pathString = pathString.substr(1);
-      }
 
       o.key = key;
       o.src.push_back(pathString + ":" + std::to_string(lineNumber));

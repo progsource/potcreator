@@ -11,6 +11,7 @@
 #include "potcreator/potcreator_config.h"
 #include "potcreator/potcreator_threadpool.h"
 #include "potcreator/potcreator_terminal.h"
+#include "potcreator/potcreator_helper.h"
 
 namespace ps {
 namespace potcreator {
@@ -55,14 +56,7 @@ public:
    */
   int32_t open(std::filesystem::path basePath, std::filesystem::path path)
   {
-    static const std::regex replaceBackslash("\\\\");
-
-    this->dbPath = path.u8string().substr(basePath.u8string().size());
-    this->dbPath = std::regex_replace(this->dbPath, replaceBackslash, "/");
-    if (this->dbPath[0] == '/')
-    {
-      this->dbPath = this->dbPath.substr(1);
-    }
+    this->dbPath = getDisplayPath(basePath, path);
 
     if (sqlite3_open(path.u8string().c_str(), &this->db) == SQLITE_OK)
     {

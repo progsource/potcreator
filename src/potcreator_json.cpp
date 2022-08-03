@@ -12,6 +12,7 @@
 #include "potcreator/potcreator_config.h"
 #include "potcreator/potcreator_threadpool.h"
 #include "potcreator/potcreator_terminal.h"
+#include "potcreator/potcreator_helper.h"
 
 // TODO: use rxterm for output
 namespace ps {
@@ -136,14 +137,7 @@ std::vector<Output> getTranslationsFromFile(
   const std::deque<std::string>& jsonPaths
 )
 {
-  static const std::regex replaceBackslash("\\\\");
-
-  std::string filePath = path.u8string().substr(basePath.u8string().size());
-  filePath = std::regex_replace(filePath, replaceBackslash, "/");
-  if (filePath[0] == '/')
-  {
-    filePath = filePath.substr(1);
-  }
+  const std::string pathString = getDisplayPath(basePath, path);
 
   std::vector<Output> out;
 
@@ -159,7 +153,7 @@ std::vector<Output> getTranslationsFromFile(
 
     for (auto& o : jsonPartsOut)
     {
-      o.extract.push_back(filePath + " jsonPath: \"" + jsonPath + "\"");
+      o.extract.push_back(pathString + " jsonPath: \"" + jsonPath + "\"");
     }
 
     mergeOutput(out, jsonPartsOut);
