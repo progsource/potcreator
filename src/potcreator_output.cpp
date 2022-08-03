@@ -3,11 +3,13 @@
 #include <algorithm>
 
 namespace ps {
+
 namespace potcreator {
 
 namespace {
 
-void makeUniqueValueVector(std::vector<std::string>& v)
+void
+makeUniqueValueVector(std::vector<std::string>& v)
 {
   std::sort(v.begin(), v.end());
   auto it = std::unique(v.begin(), v.end());
@@ -16,12 +18,14 @@ void makeUniqueValueVector(std::vector<std::string>& v)
 
 } // empty namespace
 
-void mergeOutput(std::vector<Output>& a, const std::vector<Output>& b)
+void
+mergeOutput(std::vector<Output>& a, const std::vector<Output>& b)
 {
   a.insert(a.end(), b.begin(), b.end());
 }
 
-std::vector<Output> unifyOutput(const std::vector<Output>& o)
+std::vector<Output>
+unifyOutput(const std::vector<Output>& o)
 {
   if (o.empty())
   {
@@ -36,10 +40,10 @@ std::vector<Output> unifyOutput(const std::vector<Output>& o)
       out.begin(),
       out.end(),
       [search = output.key](const Output& output)
-      {
-        return search == output.key;
-      }
-    );
+        {
+          return search == output.key;
+        }
+      );
 
     if (it == out.end())
     {
@@ -52,7 +56,14 @@ std::vector<Output> unifyOutput(const std::vector<Output>& o)
     }
   }
 
-  std::sort(out.begin(), out.end(), [](const Output& a, const Output& b) -> bool { return a.key < b.key; });
+  std::sort(
+    out.begin(),
+    out.end(),
+    [](const Output& a, const Output& b) -> bool
+      {
+        return a.key < b.key;
+      }
+    );
 
   for (auto& output : out)
   {
@@ -64,4 +75,5 @@ std::vector<Output> unifyOutput(const std::vector<Output>& o)
 }
 
 } // namespace potcreator
+
 } // namespace ps

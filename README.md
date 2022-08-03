@@ -197,7 +197,7 @@ potcreator is available under the MIT license. For more info, check out the
     `*.pot` files from different sources and merge them together), and nothing
     breaks, the likelihood of getting your pull request accepted is quiet high.
   * Please try to stick with the projects code style.
-  * Use uncrustify after you made your changes. (TODO: add uncrustify cfg file)
+  * Use [uncrustify](https://github.com/uncrustify/uncrustify) after you made your changes.
 * **Create an issue:**
   * Found a bug / have a problem?
     * Give minimum information about where you are running potcreator (Windows, Linux, Mac)

@@ -1,17 +1,19 @@
 #include "potcreator/potcreator_config.h"
 
+#include <algorithm>
 #include <fstream>
 #include <assert.h>
-#include <algorithm>
 
 #include "nlohmann/json.hpp"
 
 namespace ps {
+
 namespace potcreator {
 
 namespace {
 
-void checkConfigfileConstaints(nlohmann::json j)
+void
+checkConfigfileConstaints(nlohmann::json j)
 {
   assert(j.is_object());
   assert(j.contains("output"));
@@ -22,7 +24,8 @@ void checkConfigfileConstaints(nlohmann::json j)
   assert(j["modules"].is_array());
 }
 
-void checkModuleConstraints(nlohmann::json jsub)
+void
+checkModuleConstraints(nlohmann::json jsub)
 {
   assert(jsub.is_object());
   assert(jsub.contains("name"));
@@ -33,16 +36,17 @@ void checkModuleConstraints(nlohmann::json jsub)
 
 } // empty namespace
 
-bool Config::hasModule(const std::string& module) const
+bool
+Config::hasModule(const std::string& module) const
 {
   return std::any_of(
     this->modules.begin(),
     this->modules.end(),
     [module](const std::string& any)
-    {
-      return module == any;
-    }
-  );
+      {
+        return module == any;
+      }
+    );
 }
 
 Config
@@ -82,4 +86,5 @@ getConfigFromFile(std::string path)
 }
 
 } // namespace potcreator
+
 } // namespace ps

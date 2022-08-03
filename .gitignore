@@ -3,3 +3,7 @@
 .sconsign.dblite
 .idea
 build
+*.unc-backup.md5~
+*.unc-backup~
+src/*.uncrustify
+include/**/*.uncrustify

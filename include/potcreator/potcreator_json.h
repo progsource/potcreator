@@ -7,6 +7,7 @@
 #include "potcreator/potcreator_module.h"
 
 namespace ps {
+
 namespace potcreator {
 
 class JsonModule : public Module
@@ -22,6 +23,7 @@ public:
 };
 
 } // namespace potcreator
+
 } // namespace ps
 
 #endif // PS_POTCREATOR_JSON_H

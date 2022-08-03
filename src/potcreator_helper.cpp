@@ -3,9 +3,11 @@
 #include <regex>
 
 namespace ps {
+
 namespace potcreator {
 
-std::string getDisplayPath(std::filesystem::path basePath, std::filesystem::path path)
+std::string
+getDisplayPath(std::filesystem::path basePath, std::filesystem::path path)
 {
   static const std::regex replaceBackslash("\\\\");
 
@@ -21,4 +23,5 @@ std::string getDisplayPath(std::filesystem::path basePath, std::filesystem::path
 }
 
 } // namespace potcreator
+
 } // namespace ps

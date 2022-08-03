@@ -1,22 +1,24 @@
 #include "potcreator/potcreator_gen.h"
 
-#include <iostream>
-#include <string>
 #include <filesystem>
 #include <fstream>
+#include <iostream>
+#include <string>
 #include <assert.h>
 
 #include "potcreator/potcreator_config.h"
 #include "potcreator/potcreator_output.h"
 
 namespace ps {
+
 namespace potcreator {
 
-void genPot(const Config& cfg, const std::vector<Output>& translations)
+void
+genPot(const Config& cfg, const std::vector<Output>& translations)
 {
   static const std::string HEADER(
     u8"# Don't remove the two lines below, they're required for gettext to work correctly.\nmsgid \"\"\nmsgstr \"\"\n"
-  );
+    );
 
   std::string potData = HEADER;
 
@@ -63,4 +65,5 @@ void genPot(const Config& cfg, const std::vector<Output>& translations)
 }
 
 } // namespace potcreator
+
 } // namespace ps

@@ -1,17 +1,18 @@
 #ifndef PS_POTCREATOR_THREADPOOL_H
 #define PS_POTCREATOR_THREADPOOL_H
 
-#include <functional>
-#include <vector>
 #include <array>
-#include <deque>
-#include <thread>
-#include <mutex>
-#include <chrono>
-#include <iostream>
 #include <atomic>
+#include <chrono>
+#include <deque>
+#include <functional>
+#include <iostream>
+#include <mutex>
+#include <thread>
+#include <vector>
 
 namespace ps {
+
 namespace potcreator {
 
 /**
@@ -36,9 +37,7 @@ class ThreadPool
 {
 public:
   ThreadPool()
-  {
-
-  }
+  {}
 
   /**
    * dtor
@@ -116,36 +115,38 @@ private:
     {
       isWorkerWorking[i].store(false, std::memory_order_relaxed);
 
-      this->worker[i] = std::thread([this, i]()
-      {
-        while (true)
-        {
-          std::function<ResponseType()> task;
-
+      this->worker[i] = std::thread(
+        [this, i]()
           {
-            std::lock_guard<std::mutex> lock(taskLock);
-
-            if (tasks.empty())
+            while (true)
             {
-              return;
+              std::function<ResponseType()> task;
+
+              {
+                std::lock_guard<std::mutex> lock(taskLock);
+
+                if (tasks.empty())
+                {
+                  return;
+                }
+
+                isWorkerWorking[i].store(true, std::memory_order_relaxed);
+
+                task = tasks.front();
+                tasks.pop_front();
+              }
+
+              ResponseType res = task();
+
+              {
+                std::lock_guard<std::mutex> lock(responseLock);
+                responses.push_back(res);
+              }
+
+              isWorkerWorking[i].store(false, std::memory_order_relaxed);
             }
-
-            isWorkerWorking[i].store(true, std::memory_order_relaxed);
-
-            task = tasks.front();
-            tasks.pop_front();
           }
-
-          ResponseType res = task();
-
-          {
-            std::lock_guard<std::mutex> lock(responseLock);
-            responses.push_back(res);
-          }
-
-          isWorkerWorking[i].store(false, std::memory_order_relaxed);
-        }
-      });
+        );
 
       if (this->worker[i].joinable())
       {
@@ -199,6 +200,7 @@ private:
 };
 
 } // namespace potcreator
+
 } // namespace ps
 
 #endif // PS_POTCREATOR_THREADPOOL_H

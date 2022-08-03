@@ -1,15 +1,16 @@
 #ifndef PS_POTCREATOR_TERMINAL_H
 #define PS_POTCREATOR_TERMINAL_H
 
-#include <string>
 #include <map>
-#include <mutex>
-#include <vector>
 #include <memory>
+#include <mutex>
+#include <string>
+#include <vector>
 
 #include <iostream>
 
 namespace ps {
+
 namespace potcreator {
 
 struct Progress
@@ -70,7 +71,8 @@ public:
     Terminal::returnInstance();
   }
 
-  Terminal* operator->() {
+  Terminal* operator->()
+  {
     return instance;
   }
 
@@ -79,6 +81,7 @@ private:
 };
 
 } // namespace potcreator
+
 } // namespace ps
 
 #endif // PS_POTCREATOR_TERMINAL_H

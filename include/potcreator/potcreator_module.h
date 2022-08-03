@@ -7,6 +7,7 @@
 #include "potcreator/potcreator_output.h"
 
 namespace ps {
+
 namespace potcreator {
 
 struct Config;
@@ -21,6 +22,7 @@ public:
 };
 
 } // namespace potcreator
+
 } // namespace ps
 
 #endif // PS_POTCREATOR_MODULE_H

@@ -1,10 +1,11 @@
 #ifndef PS_POTCREATOR_H
 #define PS_POTCREATOR_H
 
-#include <string>
 #include <memory>
+#include <string>
 
 namespace ps {
+
 namespace potcreator {
 
 #define STR_(x) #x
@@ -12,7 +13,7 @@ namespace potcreator {
 
 #ifndef POTCREATOR_VERSION
 #define POTCREATOR_VERSION "unknown"
-#endif
+#endif // ifndef POTCREATOR_VERSION
 
 const std::string VERSION = STR(POTCREATOR_VERSION);
 
@@ -30,6 +31,7 @@ private:
 };
 
 } // namespace potcreator
+
 } // namespace ps
 
 #endif // PS_POTCREATOR_H

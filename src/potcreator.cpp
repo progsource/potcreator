@@ -1,43 +1,47 @@
 #include "potcreator/potcreator.h"
 
-#include <iostream>
 #include <filesystem>
+#include <iostream>
 
 #include "argh.h"
 
 #include "potcreator/potcreator_config.h"
-#include "potcreator/potcreator_gdscript.h"
 #include "potcreator/potcreator_gdscene.h"
-#include "potcreator/potcreator_json.h"
-#include "potcreator/potcreator_sqlite.h"
-#include "potcreator/potcreator_output.h"
+#include "potcreator/potcreator_gdscript.h"
 #include "potcreator/potcreator_gen.h"
+#include "potcreator/potcreator_json.h"
+#include "potcreator/potcreator_output.h"
+#include "potcreator/potcreator_sqlite.h"
 #include "potcreator/potcreator_terminal.h"
 
 #if defined(_WIN32) || defined(WIN32) || defined(__CYGWIN__) || defined(__MINGW32__) || defined(__BORLANDC__)
 #define OS_WIN
-#endif
+#endif // if defined(_WIN32) || defined(WIN32) || defined(__CYGWIN__) || defined(__MINGW32__) || defined(__BORLANDC__)
 
 namespace ps {
+
 namespace potcreator {
 
 namespace {
 
 static const uint32_t TERMINAL_MODULES_ID = 1;
 
-void showVersion()
+void
+showVersion()
 {
   std::cout << "potcreator version " << VERSION << std::endl;
 }
 
-template <typename T>
-std::vector<Output> getTranslationsFromModule(Config& cfg)
+template<typename T>
+std::vector<Output>
+getTranslationsFromModule(Config& cfg)
 {
   T module;
   return module.getTranslations(cfg);
 }
 
-void updateTerminalModuleProgress(uint32_t progress)
+void
+updateTerminalModuleProgress(uint32_t progress)
 {
   TerminalHandle terminal;
   terminal->updateProgress(TERMINAL_MODULES_ID, progress);
@@ -51,7 +55,7 @@ struct PotCreator::Pimpl
   uint32_t modulesDone = 0;
   std::vector<Output> translations;
 
-  template <typename T>
+  template<typename T>
   void fetchTranslationsForModule()
   {
     if (cfg.hasModule(T::MODULE_NAME))
@@ -71,12 +75,13 @@ PotCreator::PotCreator()
 
 PotCreator::~PotCreator() {}
 
-int PotCreator::run(int argc, char** argv)
+int
+PotCreator::run(int argc, char** argv)
 {
   // for rxterm to work on most things, this seems to be necessary
-  #ifdef OS_WIN
-    system(" ");
-  #endif
+#ifdef OS_WIN
+  system(" ");
+#endif // ifdef OS_WIN
 
   argh::parser cmdl;
   cmdl.add_params({"-h", "--help", "-p", "--path", "-v", "--verbose", "-V", "--version"});
@@ -96,12 +101,15 @@ int PotCreator::run(int argc, char** argv)
   if (isHelp)
   {
     TerminalHandle terminal;
-    terminal->showHelp({
-      {"-h, --help", {"Show this help."}},
-      {"-p, --path", {"Path in which a \".potcreator.json\" file exists", "to use it for generating the *.pot file."}},
-      {"-v, --verbose", {"Show verbose output while running."}},
-      {"-V, --version", {"Show current version."}}
-    });
+    terminal->showHelp(
+        {
+          {"-h, --help", {"Show this help."}},
+          {"-p, --path", {"Path in which a \".potcreator.json\" file exists",
+                          "to use it for generating the *.pot file."}},
+          {"-v, --verbose", {"Show verbose output while running."}},
+          {"-V, --version", {"Show current version."}}
+        }
+      );
     return 0;
   }
 
@@ -148,4 +156,5 @@ int PotCreator::run(int argc, char** argv)
 }
 
 } // namespace potcreator
+
 } // namespace ps

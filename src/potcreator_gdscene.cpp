@@ -1,17 +1,18 @@
 #include "potcreator/potcreator_gdscene.h"
 
-#include <sstream>
 #include <fstream>
 #include <regex>
+#include <sstream>
 
 #include "nlohmann/json.hpp"
 
 #include "potcreator/potcreator_config.h"
-#include "potcreator/potcreator_threadpool.h"
-#include "potcreator/potcreator_terminal.h"
 #include "potcreator/potcreator_helper.h"
+#include "potcreator/potcreator_terminal.h"
+#include "potcreator/potcreator_threadpool.h"
 
 namespace ps {
+
 namespace potcreator {
 
 const std::string GDSceneModule::MODULE_NAME = "gdscene";
@@ -24,7 +25,8 @@ struct GDSceneConfig
   std::vector<std::string> paths;
 };
 
-GDSceneConfig getModuleConfig(const Config& cfg)
+GDSceneConfig
+getModuleConfig(const Config& cfg)
 {
   GDSceneConfig gdSceneCfg;
 
@@ -51,7 +53,8 @@ GDSceneConfig getModuleConfig(const Config& cfg)
   return gdSceneCfg;
 }
 
-std::vector<Output> getTranslationsFromFile(std::filesystem::path basePath, std::filesystem::path path)
+std::vector<Output>
+getTranslationsFromFile(std::filesystem::path basePath, std::filesystem::path path)
 {
   static const std::regex re("text = \"([^~].*)\"");
   static const std::string startSubString = "text =";
@@ -63,7 +66,8 @@ std::vector<Output> getTranslationsFromFile(std::filesystem::path basePath, std:
   std::ifstream file;
   file.open(path);
 
-  if (!file.is_open()) {
+  if (!file.is_open())
+  {
     return out;
   }
 
@@ -72,7 +76,8 @@ std::vector<Output> getTranslationsFromFile(std::filesystem::path basePath, std:
   std::smatch m;
   int32_t lineNumber = 0;
 
-  while(getline(file, line)) {
+  while (getline(file, line))
+  {
     lineNumber++;
 
     std::regex_search(line, m, re);
@@ -121,7 +126,8 @@ std::vector<Output> getTranslationsFromFile(std::filesystem::path basePath, std:
 GDSceneModule::~GDSceneModule()
 {}
 
-std::vector<Output> GDSceneModule::getTranslations(const Config& cfg) const
+std::vector<Output>
+GDSceneModule::getTranslations(const Config& cfg) const
 {
   GDSceneConfig gdSceneCfg = getModuleConfig(cfg);
 
@@ -161,9 +167,12 @@ std::vector<Output> GDSceneModule::getTranslations(const Config& cfg) const
 
       taskCount++;
 
-      pool.spawn([basePath = cfg.basePath, filePath = file.path()]() {
-        return getTranslationsFromFile(basePath, filePath);
-      });
+      pool.spawn(
+        [basePath = cfg.basePath, filePath = file.path()]()
+          {
+            return getTranslationsFromFile(basePath, filePath);
+          }
+        );
     }
   }
 
@@ -189,4 +198,5 @@ std::vector<Output> GDSceneModule::getTranslations(const Config& cfg) const
 }
 
 } // namespace potcreator
+
 } // namespace ps

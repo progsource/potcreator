@@ -1,12 +1,13 @@
 #ifndef PS_POTCREATOR_CONFIG_H
 #define PS_POTCREATOR_CONFIG_H
 
+#include <filesystem>
+#include <map>
 #include <string>
 #include <vector>
-#include <map>
-#include <filesystem>
 
 namespace ps {
+
 namespace potcreator {
 
 const std::string CONFIG_FILE_NAME = ".potcreator.json";
@@ -26,6 +27,7 @@ struct Config
 Config getConfigFromFile(std::string path);
 
 } // namespace potcreator
+
 } // namespace ps
 
 #endif // PS_POTCREATOR_CONFIG_H

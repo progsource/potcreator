@@ -1,18 +1,19 @@
 #include "potcreator/potcreator_sqlite.h"
 
-#include <sstream>
 #include <fstream>
 #include <regex>
+#include <sstream>
 
 #include "nlohmann/json.hpp"
 #include "sqlite3.h"
 
 #include "potcreator/potcreator_config.h"
-#include "potcreator/potcreator_threadpool.h"
-#include "potcreator/potcreator_terminal.h"
 #include "potcreator/potcreator_helper.h"
+#include "potcreator/potcreator_terminal.h"
+#include "potcreator/potcreator_threadpool.h"
 
 namespace ps {
+
 namespace potcreator {
 
 const std::string SqliteModule::MODULE_NAME = "sqlite";
@@ -42,9 +43,7 @@ class SqliteHandle
 public:
   SqliteHandle()
     : db(nullptr)
-  {
-
-  }
+  {}
   ~SqliteHandle()
   {
     closeConnection();
@@ -86,7 +85,7 @@ public:
       -1,
       &stmt,
       &pzTail
-    );
+      );
 
     if (err != SQLITE_OK)
     {
@@ -102,7 +101,7 @@ public:
       for (size_t i = 0; i < columns.size(); ++i)
       {
         Output o;
-        o.key = std::string((char *)sqlite3_column_text(stmt, i));
+        o.key = std::string((char*)sqlite3_column_text(stmt, i));
         o.extract.push_back(this->dbPath + " table: " + tableName + " column: " + columns[i]);
         out.push_back(o);
       }
@@ -146,7 +145,8 @@ private:
   }
 };
 
-SqliteConfig getModuleConfig(const Config& cfg)
+SqliteConfig
+getModuleConfig(const Config& cfg)
 {
   SqliteConfig sqliteCfg;
 
@@ -204,7 +204,8 @@ SqliteConfig getModuleConfig(const Config& cfg)
   return sqliteCfg;
 }
 
-std::vector<Output> getTranslationsFromDb(std::filesystem::path basePath, const SqliteDb& db)
+std::vector<Output>
+getTranslationsFromDb(std::filesystem::path basePath, const SqliteDb& db)
 {
   std::filesystem::path path = basePath / std::filesystem::path(db.path).relative_path();
   path = path.make_preferred();
@@ -241,7 +242,8 @@ std::vector<Output> getTranslationsFromDb(std::filesystem::path basePath, const 
 SqliteModule::~SqliteModule()
 {}
 
-std::vector<Output> SqliteModule::getTranslations(const Config& cfg) const
+std::vector<Output>
+SqliteModule::getTranslations(const Config& cfg) const
 {
   SqliteConfig sqliteCfg = getModuleConfig(cfg);
 
@@ -269,9 +271,12 @@ std::vector<Output> SqliteModule::getTranslations(const Config& cfg) const
 
     taskCount++;
 
-    pool.spawn([basePath = cfg.basePath, sqliteDb = db]() {
-      return getTranslationsFromDb(basePath, sqliteDb);
-    });
+    pool.spawn(
+      [basePath = cfg.basePath, sqliteDb = db]()
+        {
+          return getTranslationsFromDb(basePath, sqliteDb);
+        }
+      );
   }
 
   Progress taskProgress;
@@ -296,4 +301,5 @@ std::vector<Output> SqliteModule::getTranslations(const Config& cfg) const
 }
 
 } // namespace potcreator
+
 } // namespace ps

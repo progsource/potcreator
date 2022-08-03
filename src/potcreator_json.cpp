@@ -1,19 +1,20 @@
 #include "potcreator/potcreator_json.h"
 
-#include <sstream>
-#include <fstream>
-#include <regex>
 #include <cstring>
 #include <deque>
+#include <fstream>
+#include <regex>
+#include <sstream>
 
 #include "nlohmann/json.hpp"
 
 #include "potcreator/potcreator_config.h"
-#include "potcreator/potcreator_threadpool.h"
-#include "potcreator/potcreator_terminal.h"
 #include "potcreator/potcreator_helper.h"
+#include "potcreator/potcreator_terminal.h"
+#include "potcreator/potcreator_threadpool.h"
 
 namespace ps {
+
 namespace potcreator {
 
 const std::string JsonModule::MODULE_NAME = "json";
@@ -32,7 +33,8 @@ struct JsonConfig
   std::vector<JsonFileConfig> files;
 };
 
-JsonConfig getModuleConfig(const Config& cfg)
+JsonConfig
+getModuleConfig(const Config& cfg)
 {
   JsonConfig jsonCfg;
 
@@ -79,7 +81,8 @@ JsonConfig getModuleConfig(const Config& cfg)
   return jsonCfg;
 }
 
-std::deque<std::string> splitString(std::string text, std::string delimeter)
+std::deque<std::string>
+splitString(std::string text, std::string delimeter)
 {
   std::deque<std::string> out;
 
@@ -88,14 +91,15 @@ std::deque<std::string> splitString(std::string text, std::string delimeter)
   ptr = strtok(str, delimeter.c_str());
   while (ptr != nullptr)
   {
-      out.push_back(ptr);
-      ptr = strtok(nullptr, delimeter.c_str());
+    out.push_back(ptr);
+    ptr = strtok(nullptr, delimeter.c_str());
   }
 
   return out;
 }
 
-std::vector<Output> fetchElement(nlohmann::json j, std::deque<std::string> jsonPaths)
+std::vector<Output>
+fetchElement(nlohmann::json j, std::deque<std::string> jsonPaths)
 {
   if (j.is_string())
   {
@@ -129,11 +133,12 @@ std::vector<Output> fetchElement(nlohmann::json j, std::deque<std::string> jsonP
   return {};
 }
 
-std::vector<Output> getTranslationsFromFile(
+std::vector<Output>
+getTranslationsFromFile(
   std::filesystem::path basePath,
   std::filesystem::path path,
   const std::deque<std::string>& jsonPaths
-)
+  )
 {
   const std::string pathString = getDisplayPath(basePath, path);
 
@@ -170,7 +175,8 @@ std::vector<Output> getTranslationsFromFile(
 JsonModule::~JsonModule()
 {}
 
-std::vector<Output> JsonModule::getTranslations(const Config& cfg) const
+std::vector<Output>
+JsonModule::getTranslations(const Config& cfg) const
 {
   JsonConfig jsonCfg = getModuleConfig(cfg);
 
@@ -212,9 +218,12 @@ std::vector<Output> JsonModule::getTranslations(const Config& cfg) const
 
         taskCount++;
 
-        pool.spawn([basePath = cfg.basePath, filePath = file.path(), jsonPaths = fileCfg.jsonPaths]() {
-          return getTranslationsFromFile(basePath, filePath, jsonPaths);
-        });
+        pool.spawn(
+          [basePath = cfg.basePath, filePath = file.path(), jsonPaths = fileCfg.jsonPaths]()
+            {
+              return getTranslationsFromFile(basePath, filePath, jsonPaths);
+            }
+          );
       }
     }
   }
@@ -241,4 +250,5 @@ std::vector<Output> JsonModule::getTranslations(const Config& cfg) const
 }
 
 } // namespace potcreator
+
 } // namespace ps
