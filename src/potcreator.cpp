@@ -186,6 +186,8 @@ int PotCreator::run(int argc, char** argv)
   pimpl->fetchTranslationsForModule<SqliteModule>();
   pimpl->fetchTranslationsForModule<JsonModule>();
 
+  pimpl->translations = unifyOutput(pimpl->translations);
+
   genPot(pimpl->cfg, pimpl->translations);
 
   std::filesystem::path outputFile = pimpl->cfg.basePath / pimpl->cfg.outputPath.relative_path();
