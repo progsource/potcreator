@@ -2,7 +2,6 @@
 
 #include <sstream>
 #include <fstream>
-#include <iostream>
 #include <regex>
 
 #include "nlohmann/json.hpp"
@@ -91,8 +90,9 @@ public:
 
     if (err != SQLITE_OK)
     {
-      // TODO: put out in terminal
-      std::cout << "some error: " << err << std::endl;
+      TerminalHandle terminal;
+      terminal->addError("some error: " + std::to_string(err));
+      return {};
     }
 
     sqlite3_step(stmt);
@@ -228,6 +228,11 @@ std::vector<Output> getTranslationsFromDb(std::filesystem::path basePath, const 
     mergeOutput(out, tableResult);
   }
 
+  {
+    TerminalHandle terminal;
+    terminal->incrementProgress(SqliteModule::TERMINAL_ID);
+  }
+
   return out;
 }
 
@@ -258,7 +263,8 @@ std::vector<Output> SqliteModule::getTranslations(const Config& cfg) const
 
     if (cfg.isVerbose)
     {
-      std::cout << "sqlite get translations from: " << path << std::endl;
+      TerminalHandle terminal;
+      terminal->addInfo("sqlite get translations from: " + path.u8string());
     }
 
     taskCount++;

@@ -2,7 +2,6 @@
 
 #include <sstream>
 #include <fstream>
-#include <iostream>
 #include <regex>
 #include <cstring>
 #include <deque>
@@ -208,7 +207,8 @@ std::vector<Output> JsonModule::getTranslations(const Config& cfg) const
 
         if (cfg.isVerbose)
         {
-          std::cout << "json get translations from: " << file.path() << std::endl;
+          TerminalHandle terminal;
+          terminal->addInfo("json get translations from: " + file.path().u8string());
         }
 
         taskCount++;

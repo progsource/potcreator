@@ -2,7 +2,6 @@
 
 #include <sstream>
 #include <fstream>
-#include <iostream>
 #include <regex>
 
 #include "nlohmann/json.hpp"
@@ -156,7 +155,8 @@ std::vector<Output> GDSceneModule::getTranslations(const Config& cfg) const
 
       if (cfg.isVerbose)
       {
-        std::cout << "gdscene get translations from: " << file.path() << std::endl;
+        TerminalHandle terminal;
+        terminal->addInfo("gdscene get translations from: " + file.path().u8string());
       }
 
       taskCount++;

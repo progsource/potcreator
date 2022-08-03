@@ -132,6 +132,11 @@ int PotCreator::run(int argc, char** argv)
 
   pimpl->translations = unifyOutput(pimpl->translations);
 
+  {
+    TerminalHandle terminal;
+    terminal->cleanLine();
+  }
+
   genPot(pimpl->cfg, pimpl->translations);
 
   std::filesystem::path outputFile = pimpl->cfg.basePath / pimpl->cfg.outputPath.relative_path();

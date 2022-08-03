@@ -33,6 +33,11 @@ public:
   void updateProgress(uint32_t id, uint32_t current);
   void incrementProgress(uint32_t id);
 
+  void addInfo(const std::string& info);
+  void addError(const std::string& err);
+
+  void cleanLine();
+
 private:
   struct Impl;
   std::unique_ptr<Impl> impl;

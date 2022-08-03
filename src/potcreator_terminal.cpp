@@ -1,5 +1,8 @@
 #include "potcreator/potcreator_terminal.h"
 
+#include <sstream>
+#include <iomanip>
+
 #include "rxterm/terminal.hpp"
 #include "rxterm/style.hpp"
 #include "rxterm/image.hpp"
@@ -53,18 +56,61 @@ auto getParametersInLayout(const std::map<std::string, std::vector<std::string>>
   return rxterm::StackLayout<rxterm::Component>(parameterLayouts);
 }
 
+std::string getPercentageText(float percentage)
+{
+  std::stringstream stream;
+  stream << std::fixed << std::setprecision(2) << percentage;
+  return stream.str() + "%";
+}
+
 } // empty namespace
 
 struct Terminal::Impl
 {
   rxterm::VirtualTerminal vt;
   std::map<uint32_t, Progress> progress;
+  std::vector<std::string> infos;
+  std::vector<std::string> errors;
 
   unsigned getTerminalWidth()
   {
     unsigned w = rxterm::VirtualTerminal::width();
     if (!w) w = 80;
     return w;
+  }
+
+  void displayProgress()
+  {
+    std::vector<rxterm::Component> outputs;
+
+    for (const std::string& err : errors)
+    {
+      outputs.push_back(rxterm::Text({rxterm::Color::Black, rxterm::FontColor::BrightRed}, err));
+    }
+
+    for (const auto& [key, prog] : this->progress)
+    {
+      const float progressPercentage = prog.max == 0 ? 0 : 100.f / float(prog.max) * float(prog.current);
+
+      outputs.push_back(rxterm::Text(prog.displayName + ":"));
+      outputs.push_back(rxterm::FlowLayout<rxterm::Text>(
+        rxterm::Text({rxterm::Color::Black, rxterm::FontColor::Yellow}, prog.current),
+        rxterm::Text(" / "),
+        rxterm::Text({rxterm::Color::Black, rxterm::FontColor::Green}, prog.max),
+        rxterm::Text(" -> "),
+        rxterm::Text({rxterm::Color::Black, rxterm::FontColor::Magenta}, getPercentageText(progressPercentage))
+      ));
+    }
+
+    for (const std::string& info : infos)
+    {
+      outputs.push_back(rxterm::Text({rxterm::Color::Black, rxterm::FontColor::BrightYellow}, info));
+    }
+
+    rxterm::StackLayout<rxterm::Component> layout(outputs);
+
+    unsigned w = this->getTerminalWidth();
+    this->vt = renderToTerm(this->vt, w, layout);
   }
 };
 
@@ -98,7 +144,7 @@ void Terminal::showHelp(const std::map<std::string, std::vector<std::string>>& p
 void Terminal::addProgress(const Progress& progress)
 {
   this->impl->progress[progress.id] = progress;
-  this->displayProgress(progress.id);
+  this->impl->displayProgress();
 }
 
 void Terminal::updateProgress(uint32_t id, uint32_t current)
@@ -109,7 +155,7 @@ void Terminal::updateProgress(uint32_t id, uint32_t current)
   }
 
   this->impl->progress.at(id).current = current;
-  this->displayProgress(id);
+  this->impl->displayProgress();
 }
 
 void Terminal::incrementProgress(uint32_t id)
@@ -120,7 +166,24 @@ void Terminal::incrementProgress(uint32_t id)
   }
 
   this->impl->progress.at(id).current++;
-  this->displayProgress(id);
+  this->impl->displayProgress();
+}
+
+void Terminal::addInfo(const std::string& info)
+{
+  this->impl->infos.push_back(info);
+  this->impl->displayProgress();
+}
+
+void Terminal::addError(const std::string& err)
+{
+  this->impl->errors.push_back(err);
+  this->impl->displayProgress();
+}
+
+void Terminal::cleanLine()
+{
+  clear();
 }
 
 void Terminal::displayProgress(uint32_t id)
