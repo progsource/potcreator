@@ -129,7 +129,7 @@ would then look like this:
 
 The `jsonPaths` elements are separated by `:`. It doesn't matter what type they
 are (if array, object, etc.). As long as strings are at the end, you will get
-translations keys from them.
+translation keys from them.
 
 For a more detailed example, please refer to the `examples/json` folder.
 
