@@ -214,14 +214,6 @@ Terminal::cleanLine()
   clear();
 }
 
-void
-Terminal::displayProgress(uint32_t id)
-{
-  std::cout << this->impl->progress.at(id).displayName << ": " <<
-    this->impl->progress.at(id).current << "/" << this->impl->progress.at(id).max <<
-    std::endl;
-}
-
 } // namespace potcreator
 
 } // namespace ps

@@ -48,8 +48,6 @@ private:
 
   Terminal();
   ~Terminal();
-
-  void displayProgress(uint32_t id);
 };
 
 /**
