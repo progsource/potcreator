@@ -56,9 +56,17 @@ getModuleConfig(const Config& cfg)
 std::vector<Output>
 getTranslationsFromFile(std::filesystem::path basePath, std::filesystem::path path)
 {
-  static const std::regex re("text = \"([^~].*)\"");
-  static const std::string startSubString = "text =";
-  static const size_t startSubStringSize = startSubString.size();
+  static const std::regex re("^(text|title) = \"([^~].*)\"");
+  static const std::vector<std::string> startSubStrings = {"text = \"", "title = \""};
+  static const std::vector<size_t> startSubStringSizes = [strs = startSubStrings]()
+                                                         {
+                                                           std::vector<size_t> sizes;
+                                                           for (const std::string& str : strs)
+                                                           {
+                                                             sizes.push_back(str.size());
+                                                           }
+                                                           return sizes;
+                                                         }();
 
   std::vector<Output> out;
 
@@ -68,6 +76,10 @@ getTranslationsFromFile(std::filesystem::path basePath, std::filesystem::path pa
 
   if (!file.is_open())
   {
+    {
+      TerminalHandle terminal;
+      terminal->addError("Cannot open file " + path.u8string());
+    }
     return out;
   }
 
@@ -91,12 +103,29 @@ getTranslationsFromFile(std::filesystem::path basePath, std::filesystem::path pa
         continue;
       }
 
-      if (match.substr(0, startSubStringSize) == startSubString)
+      bool has_key_without_extra = true;
+      size_t key_index = 0;
+
+      for (size_t i = 0; i < startSubStrings.size(); ++i)
+      {
+        if (match.substr(0, startSubStringSizes[i]) == startSubStrings[i])
+        {
+          has_key_without_extra = false;
+          key_index = i;
+          break;
+        }
+      }
+
+      if (has_key_without_extra)
       {
         continue;
       }
 
       std::string key = match;
+      key = key.substr(
+        startSubStringSizes[key_index],
+        key.size() - startSubStringSizes[key_index] - 1
+        );
 
       if (key.empty())
       {

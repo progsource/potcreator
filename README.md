@@ -79,8 +79,8 @@ translation keys.
 ### GDScene
 
 This module will walk through any given path and check `*.tscn` files for
-`text = ""`. It will leave out texts that start with `~`. Besides that
-everything between the quotes will be counted as a translation key.
+`text = ""` and `title = ""`. It will leave out texts that start with `~`.
+Besides that everything between the quotes will be counted as a translation key.
 
 ```json
 {
